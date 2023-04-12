@@ -6,8 +6,8 @@ namespace DotaMarket.DataLayer.Entities
     {
         public Guid Id { get; set; }
         
-        public Guid BuyId { get; set; }
+        public Guid? UserId { get; set; }
         
-        public Guid SaleId { get; set; }
+        public Guid? ItemId { get; set; }
     }
 }

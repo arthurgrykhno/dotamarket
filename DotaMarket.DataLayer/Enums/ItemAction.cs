@@ -3,6 +3,6 @@ namespace DotaMarket.DataLayer.Enums
 {
     public enum ItemAction
     {
-        Sold, Bought,Traded
+        Sold, Bought, Traded
     }
 }

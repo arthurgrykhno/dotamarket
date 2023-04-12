@@ -7,7 +7,7 @@ namespace DotaMarket.DataLayer.Entities
         
         public Guid Id { get; set; }
 
-        public Guid ItemId { get; set; }
-        public IEnumerable<Item>? Items { get; set; }
+        public Guid? ItemId { get; set; }
+        public Item? Items { get; set; }
     }
 }
