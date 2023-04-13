@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using DotaMarket.DataLayer.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DotaMarket.DataLayer.Entities
 {
-    public class MarketHistory
+    public class MarketHistory : BaseEntity
     {
-        public Guid Id { get; set; }
-        
-        public Guid? UserId { get; set; }
-        
+        public ItemAction ItemAction { get; set; }
+
+        [ForeignKey("Item")]
         public Guid? ItemId { get; set; }
     }
 }

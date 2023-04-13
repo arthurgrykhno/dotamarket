@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DotaMarket.DataLayer.Entities
 {
-    public class Inventory
+    public class Inventory : BaseEntity
     {
-        public Guid Id { get; set; }
 
+        [ForeignKey("Item")]
         public Guid? ItemId { get; set; }
         public Item? Items { get; set; }
         [ForeignKey("User")]
