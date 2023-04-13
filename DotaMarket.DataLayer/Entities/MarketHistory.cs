@@ -7,7 +7,7 @@ namespace DotaMarket.DataLayer.Entities
     {
         public ItemAction ItemAction { get; set; }
 
-        [ForeignKey("Item")]
         public Guid? ItemId { get; set; }
+        public Item? Items { get; set; }
     }
 }

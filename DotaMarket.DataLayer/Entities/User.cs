@@ -10,11 +10,11 @@ namespace DotaMarket.DataLayer.Entities
         public string Password { get; set; }
         public int? Age { get; set; }
 
-        [ForeignKey("MarketHistory")]
+
         public Guid ActionHistoryId { get; set; }
         public MarketHistory? ActionHistory { get; set; }
 
-        [ForeignKey("Inventory")]
+
         public Guid? InventoryId { get; set; }
         public Inventory? Inventory { get; set; }
 

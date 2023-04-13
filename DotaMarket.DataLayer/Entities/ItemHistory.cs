@@ -1,5 +1,4 @@
 ﻿using DotaMarket.DataLayer.Enums;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DotaMarket.DataLayer.Entities
 {
@@ -7,10 +6,10 @@ namespace DotaMarket.DataLayer.Entities
     {
         public ItemAction? ItemAction { get; set; }
 
-        [ForeignKey("User")]
         public Guid? BuyerId { get; set; }
+        public User? Buyer { get; set; }
 
-        [ForeignKey("User")]
         public Guid? SellerId { get; set; }
+        public User? Seller { get; set; }
     }
 }

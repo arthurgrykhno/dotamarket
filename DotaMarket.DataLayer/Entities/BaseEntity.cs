@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DotaMarket.DataLayer.Entities
+﻿namespace DotaMarket.DataLayer.Entities
 {
     public  class BaseEntity
     {

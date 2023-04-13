@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotaMarket.DataLayer.Migrations
 {
     [DbContext(typeof(DotaMarketContext))]
-    [Migration("20230413142647_Initial3")]
-    partial class Initial3
+    [Migration("20230413230340_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,26 +29,26 @@ namespace DotaMarket.DataLayer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedAt");
 
                     b.Property<Guid?>("ItemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ItemsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("isDeleted");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemsId");
+                    b.HasIndex("ItemId");
 
                     b.HasIndex("UserId");
 
@@ -58,11 +58,12 @@ namespace DotaMarket.DataLayer.Migrations
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.Item", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedAt");
 
                     b.Property<int>("Hero")
                         .HasColumnType("int");
@@ -70,28 +71,31 @@ namespace DotaMarket.DataLayer.Migrations
                     b.Property<Guid>("InventoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ItemHistoryId")
+                    b.Property<Guid>("ItemHistoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal?>("ItemPrice")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal>("ItemPrice")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<int>("ItemSlot")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("Rare")
                         .HasColumnType("int");
 
                     b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("isDeleted");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemHistoryId");
+                    b.HasIndex("InventoryId");
 
                     b.ToTable("Items");
                 });
@@ -100,13 +104,15 @@ namespace DotaMarket.DataLayer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id");
 
                     b.Property<Guid?>("BuyerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedAt");
 
                     b.Property<int?>("ItemAction")
                         .HasColumnType("int");
@@ -115,43 +121,53 @@ namespace DotaMarket.DataLayer.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("isDeleted");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("SellerId");
 
                     b.ToTable("ItemHistories");
                 });
 
-            modelBuilder.Entity("DotaMarket.DataLayer.Entities.Market", b =>
+            modelBuilder.Entity("DotaMarket.DataLayer.Entities.MarketDeals", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedAt");
 
-                    b.Property<Guid?>("ItemId")
+                    b.Property<Guid?>("ItemsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("isDeleted");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemId");
+                    b.HasIndex("ItemsId");
 
-                    b.ToTable("Market");
+                    b.ToTable("MarketDeals");
                 });
 
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.MarketHistory", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedAt");
 
                     b.Property<int>("ItemAction")
                         .HasColumnType("int");
@@ -160,9 +176,12 @@ namespace DotaMarket.DataLayer.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("isDeleted");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
 
                     b.ToTable("MarketHistories");
                 });
@@ -171,38 +190,47 @@ namespace DotaMarket.DataLayer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Id");
 
                     b.Property<Guid>("ActionHistoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("Age")
+                        .HasMaxLength(3)
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedAt");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<Guid?>("InventoryId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Login")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("bit")
+                        .HasColumnName("isDeleted");
 
                     b.HasKey("Id");
 
@@ -217,7 +245,7 @@ namespace DotaMarket.DataLayer.Migrations
                 {
                     b.HasOne("DotaMarket.DataLayer.Entities.Item", "Items")
                         .WithMany()
-                        .HasForeignKey("ItemsId");
+                        .HasForeignKey("ItemId");
 
                     b.HasOne("DotaMarket.DataLayer.Entities.User", "User")
                         .WithMany()
@@ -232,12 +260,46 @@ namespace DotaMarket.DataLayer.Migrations
                 {
                     b.HasOne("DotaMarket.DataLayer.Entities.ItemHistory", "ItemHistory")
                         .WithMany()
-                        .HasForeignKey("ItemHistoryId");
+                        .HasForeignKey("Id");
+
+                    b.HasOne("DotaMarket.DataLayer.Entities.Inventory", "Inventory")
+                        .WithMany()
+                        .HasForeignKey("InventoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Inventory");
 
                     b.Navigation("ItemHistory");
                 });
 
-            modelBuilder.Entity("DotaMarket.DataLayer.Entities.Market", b =>
+            modelBuilder.Entity("DotaMarket.DataLayer.Entities.ItemHistory", b =>
+                {
+                    b.HasOne("DotaMarket.DataLayer.Entities.User", "Buyer")
+                        .WithMany()
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("DotaMarket.DataLayer.Entities.User", "Seller")
+                        .WithMany()
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("Seller");
+                });
+
+            modelBuilder.Entity("DotaMarket.DataLayer.Entities.MarketDeals", b =>
+                {
+                    b.HasOne("DotaMarket.DataLayer.Entities.Item", "Items")
+                        .WithMany()
+                        .HasForeignKey("ItemsId");
+
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("DotaMarket.DataLayer.Entities.MarketHistory", b =>
                 {
                     b.HasOne("DotaMarket.DataLayer.Entities.Item", "Items")
                         .WithMany()
@@ -256,7 +318,9 @@ namespace DotaMarket.DataLayer.Migrations
 
                     b.HasOne("DotaMarket.DataLayer.Entities.Inventory", "Inventory")
                         .WithMany()
-                        .HasForeignKey("InventoryId");
+                        .HasForeignKey("InventoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ActionHistory");
 
