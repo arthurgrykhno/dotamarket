@@ -16,12 +16,13 @@ namespace DotaMarket.DataLayer.EntityConfiguration
             builder.Property(e => e.ItemPrice).IsRequired().HasPrecision(10,2);
 
             builder.HasOne(e => e.ItemHistory)
-                .WithMany()
-                .HasForeignKey(e => e.Id).IsRequired(false);
+                   .WithMany()
+                   .HasForeignKey(e => e.ItemHistoryId);
 
-            builder.HasOne(a => a.Inventory)
-                .WithMany()
-                .HasForeignKey(e => e.InventoryId).IsRequired();
+            builder.HasOne(e => e.Inventory)
+                .WithMany(e => e.Items)
+                .HasForeignKey(e => e.InventoryId)
+                .IsRequired();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DotaMarket.DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DotaMarket.DataLayer.EntityConfiguration
@@ -9,19 +10,15 @@ namespace DotaMarket.DataLayer.EntityConfiguration
         {
             base.Configure(builder);
 
-            builder.Property(e => e.ItemId).IsRequired(false);
-            builder.Property(e => e.UserId).IsRequired(false);
-
-            builder.HasOne(e => e.Items)
-                .WithMany()
-                .HasForeignKey(e => e.ItemId)
-                .IsRequired(false);
+            builder.HasMany(e => e.Items)
+                .WithOne(e => e.Inventory)
+                .HasForeignKey(e => e.InventoryId);
 
 
             builder.HasOne(e => e.User)
-                .WithMany()
-                .HasForeignKey(e => e.UserId)
-                .IsRequired(false);
+                .WithOne(e => e.Inventory)
+                .HasForeignKey<Inventory>(e => e.UserId)
+                .IsRequired();
         }
     }
 }

@@ -8,10 +8,12 @@ namespace DotaMarket.DataLayer.EntityConfiguration
         public override void Configure(EntityTypeBuilder<MarketDeals> builder)
         {
             base.Configure(builder);
+
             builder.HasOne(p => p.Items)
                 .WithMany()
                 .HasForeignKey(p => p.ItemsId)
                 .IsRequired(false);
+           
         }
     }
 }

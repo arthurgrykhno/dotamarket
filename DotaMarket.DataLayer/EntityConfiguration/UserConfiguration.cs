@@ -18,12 +18,12 @@ namespace DotaMarket.DataLayer.EntityConfiguration
             builder.HasOne(e => e.ActionHistory)
                 .WithMany()
                 .HasForeignKey(e => e.ActionHistoryId)
-                .IsRequired();
+                .IsRequired(false);
 
             builder.HasOne(e => e.Inventory)
-                .WithMany()
-                .HasForeignKey(e => e.InventoryId).IsRequired();
-
+                 .WithOne(e => e.User)
+             .HasForeignKey<User>(e => e.InventoryId)
+            .IsRequired(false);
         }
     }
 }

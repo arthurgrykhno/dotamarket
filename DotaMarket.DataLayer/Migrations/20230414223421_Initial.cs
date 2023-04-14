@@ -16,8 +16,7 @@ namespace DotaMarket.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     isDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -67,10 +66,11 @@ namespace DotaMarket.DataLayer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Items_ItemHistories_Id",
-                        column: x => x.Id,
+                        name: "FK_Items_ItemHistories_ItemHistoryId",
+                        column: x => x.ItemHistoryId,
                         principalTable: "ItemHistories",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -123,7 +123,7 @@ namespace DotaMarket.DataLayer.Migrations
                     Password = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Age = table.Column<int>(type: "int", maxLength: 3, nullable: true),
                     ActionHistoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    InventoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    InventoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     isDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -134,25 +134,13 @@ namespace DotaMarket.DataLayer.Migrations
                         name: "FK_Users_Inventory_InventoryId",
                         column: x => x.InventoryId,
                         principalTable: "Inventory",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Users_MarketHistories_ActionHistoryId",
                         column: x => x.ActionHistoryId,
                         principalTable: "MarketHistories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Inventory_ItemId",
-                table: "Inventory",
-                column: "ItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Inventory_UserId",
-                table: "Inventory",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItemHistories_BuyerId",
@@ -168,6 +156,11 @@ namespace DotaMarket.DataLayer.Migrations
                 name: "IX_Items_InventoryId",
                 table: "Items",
                 column: "InventoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Items_ItemHistoryId",
+                table: "Items",
+                column: "ItemHistoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MarketDeals_ItemsId",
@@ -187,21 +180,9 @@ namespace DotaMarket.DataLayer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Users_InventoryId",
                 table: "Users",
-                column: "InventoryId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Inventory_Items_ItemId",
-                table: "Inventory",
-                column: "ItemId",
-                principalTable: "Items",
-                principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Inventory_Users_UserId",
-                table: "Inventory",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id");
+                column: "InventoryId",
+                unique: true,
+                filter: "[InventoryId] IS NOT NULL");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ItemHistories_Users_BuyerId",
@@ -222,34 +203,30 @@ namespace DotaMarket.DataLayer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Inventory_Items_ItemId",
-                table: "Inventory");
+                name: "FK_ItemHistories_Users_BuyerId",
+                table: "ItemHistories");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_MarketHistories_Items_ItemId",
-                table: "MarketHistories");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Inventory_Users_UserId",
-                table: "Inventory");
+                name: "FK_ItemHistories_Users_SellerId",
+                table: "ItemHistories");
 
             migrationBuilder.DropTable(
                 name: "MarketDeals");
 
             migrationBuilder.DropTable(
-                name: "Items");
-
-            migrationBuilder.DropTable(
-                name: "ItemHistories");
-
-            migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "MarketHistories");
+
+            migrationBuilder.DropTable(
+                name: "Items");
 
             migrationBuilder.DropTable(
                 name: "Inventory");
 
             migrationBuilder.DropTable(
-                name: "MarketHistories");
+                name: "ItemHistories");
         }
     }
 }
