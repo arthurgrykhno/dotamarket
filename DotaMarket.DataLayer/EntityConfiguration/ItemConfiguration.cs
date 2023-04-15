@@ -9,13 +9,15 @@ namespace DotaMarket.DataLayer.EntityConfiguration
         {
             base.Configure(builder);
 
+            builder.Property(e => e.ItemSlot)
+                .IsRequired();
+
+
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(30);
 
-            builder.Property(e => e.ItemSlot)
-                .IsRequired();
-
+ 
             builder.Property(e => e.Hero)
                 .IsRequired();
 
@@ -23,8 +25,8 @@ namespace DotaMarket.DataLayer.EntityConfiguration
                 .IsRequired();            
 
             builder.HasOne(e => e.ItemHistory)
-                   .WithMany()
-                   .HasForeignKey(e => e.ItemHistoryId);
+                .WithMany()
+                .HasForeignKey(e => e.ItemHistoryId);
 
             builder.HasOne(e => e.Inventory)
                 .WithMany(e => e.Items)

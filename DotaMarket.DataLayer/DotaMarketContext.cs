@@ -7,7 +7,7 @@ namespace DotaMarket.DataLayer
     public class DotaMarketContext : DbContext
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<Inventory> Inventory { get; set; }
+        public DbSet<Inventory> Inventories { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<MarketDeal> MarketDeals { get; set; }
         public DbSet<MarketHistory> MarketHistories { get; set; }

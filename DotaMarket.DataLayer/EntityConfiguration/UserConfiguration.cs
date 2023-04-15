@@ -29,14 +29,14 @@ namespace DotaMarket.DataLayer.EntityConfiguration
                 .IsRequired(false)
                 .HasMaxLength(3);
 
-            builder.HasOne(e => e.ActionHistory)
+            builder.HasOne(e => e.MarketHistory)
                 .WithMany()
-                .HasForeignKey(e => e.ActionHistoryId)
+                .HasForeignKey(e => e.MarketHistoryId)
                 .IsRequired(false);
 
             builder.HasOne(e => e.Inventory)
                 .WithOne(e => e.User)
-                .HasForeignKey<User>(e => e.InventoryId)
+                .HasForeignKey<User>(e => e.Id)
                 .IsRequired(false);
         }
     }

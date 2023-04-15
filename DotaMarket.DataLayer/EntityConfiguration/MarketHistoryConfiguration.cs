@@ -9,7 +9,7 @@ namespace DotaMarket.DataLayer.EntityConfiguration
         {
             base.Configure(builder);
 
-            builder.Property(e => e.ItemAction).IsRequired();
+            builder.Property(e => e.MarketDeal).IsRequired();
 
             builder.HasOne(e => e.Items)
                 .WithMany()

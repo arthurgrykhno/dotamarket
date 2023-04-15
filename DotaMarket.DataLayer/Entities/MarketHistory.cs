@@ -5,7 +5,7 @@ namespace DotaMarket.DataLayer.Entities
 {
     public class MarketHistory : BaseEntity
     {
-       public MarketDeal? ItemAction { get; set; }
+       public MarketDeal MarketDeal { get; set; }
 
         public Guid? ItemId { get; set; }
         public Item? Item { get; set; }

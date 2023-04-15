@@ -9,7 +9,7 @@ namespace DotaMarket.DataLayer.EntityConfiguration
         {
             base.Configure(builder);
 
-            builder.Property(e => e.Desrpition)
+            builder.Property(e => e.Description)
                 .IsRequired()
                 .HasMaxLength(200);
 

@@ -11,8 +11,8 @@ namespace DotaMarket.DataLayer.Entities
         public int? Age { get; set; }
 
 
-        public Guid ActionHistoryId { get; set; }
-        public IEnumerable<MarketHistory?> ActionHistory { get; set; }
+        public Guid MarketHistoryId { get; set; }
+        public IEnumerable<MarketHistory?> MarketHistory { get; set; }
 
 
         public Guid? InventoryId { get; set; }
