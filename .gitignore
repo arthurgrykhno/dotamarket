@@ -348,4 +348,3 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-/DotaMarket.DataLayer/Migrations/20230413142647_Initial3.Designer.cs

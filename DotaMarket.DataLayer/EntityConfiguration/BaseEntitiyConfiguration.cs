@@ -9,9 +9,16 @@ namespace DotaMarket.DataLayer.EntityConfiguration
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {
             builder.HasKey(k => k.Id);
-            builder.Property(p => p.Id).HasColumnName("Id");
-            builder.Property(p => p.CreatedAt).HasColumnName("CreatedAt").IsRequired();
-            builder.Property(p => p.isDeleted).HasColumnName("isDeleted").IsRequired();
+
+            builder.Property(p => p.Id);
+
+            builder.Property(p => p.CreatedAt)
+                .HasColumnName("CreatedAt")
+                .IsRequired();
+
+            builder.Property(p => p.isDeleted)
+                .HasColumnName("isDeleted")
+                .IsRequired();
         }
     }    
 }

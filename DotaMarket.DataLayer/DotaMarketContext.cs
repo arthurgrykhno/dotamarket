@@ -9,7 +9,7 @@ namespace DotaMarket.DataLayer
         public DbSet<User> Users { get; set; }
         public DbSet<Inventory> Inventory { get; set; }
         public DbSet<Item> Items { get; set; }
-        public DbSet<MarketDeals> MarketDeals { get; set; }
+        public DbSet<MarketDeal> MarketDeals { get; set; }
         public DbSet<MarketHistory> MarketHistories { get; set; }
         public DbSet<ItemHistory> ItemHistories { get; set; }
        
@@ -23,7 +23,7 @@ namespace DotaMarket.DataLayer
             modelBuilder.ApplyConfiguration(new InventoryConfiguration());
             modelBuilder.ApplyConfiguration(new ItemConfiguration());
             modelBuilder.ApplyConfiguration(new ItemHistoryConfiguration());
-            modelBuilder.ApplyConfiguration(new MarketDealsConfiguration());
+            modelBuilder.ApplyConfiguration(new MarketDealConfiguration());
             modelBuilder.ApplyConfiguration(new MarketHistoryConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
         }

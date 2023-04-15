@@ -10,20 +10,18 @@ namespace DotaMarket.DataLayer.EntityConfiguration
         {
             base.Configure(builder);
 
-            builder.Property(p => p.ItemAction).IsRequired(false);
-
             builder.HasOne(p => p.Buyer)
                 .WithMany()
                 .HasForeignKey(p => p.BuyerId)
                 .OnDelete(DeleteBehavior.NoAction)
-                .IsRequired(false);
+                .IsRequired();
 
 
             builder.HasOne(p => p.Seller)
                 .WithMany()
                 .HasForeignKey(p => p.SellerId)
                 .OnDelete(DeleteBehavior.NoAction)
-                .IsRequired(false);
+                .IsRequired();
         }
     }
 }

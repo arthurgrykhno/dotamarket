@@ -9,11 +9,25 @@ namespace DotaMarket.DataLayer.EntityConfiguration
         {
             base.Configure(builder);
 
-            builder.Property(e => e.Name).IsRequired().HasMaxLength(30);
-            builder.Property(e => e.Email).IsRequired().HasMaxLength(100);
-            builder.Property(e => e.Login).IsRequired().HasMaxLength(30);
-            builder.Property(e => e.Password).IsRequired().HasMaxLength(30);
-            builder.Property(e => e.Age).IsRequired(false).HasMaxLength(3);
+            builder.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(30);
+
+            builder.Property(e => e.Email)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder.Property(e => e.Login)
+                .IsRequired()
+                .HasMaxLength(30);
+
+            builder.Property(e => e.Password)
+                .IsRequired()
+                .HasMaxLength(30);
+
+            builder.Property(e => e.Age)
+                .IsRequired(false)
+                .HasMaxLength(3);
 
             builder.HasOne(e => e.ActionHistory)
                 .WithMany()
@@ -21,9 +35,9 @@ namespace DotaMarket.DataLayer.EntityConfiguration
                 .IsRequired(false);
 
             builder.HasOne(e => e.Inventory)
-                 .WithOne(e => e.User)
-             .HasForeignKey<User>(e => e.InventoryId)
-            .IsRequired(false);
+                .WithOne(e => e.User)
+                .HasForeignKey<User>(e => e.InventoryId)
+                .IsRequired(false);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace DotaMarket.DataLayer.Entities
 
 
         public Guid ActionHistoryId { get; set; }
-        public MarketHistory? ActionHistory { get; set; }
+        public IEnumerable<MarketHistory?> ActionHistory { get; set; }
 
 
         public Guid? InventoryId { get; set; }

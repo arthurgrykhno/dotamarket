@@ -9,11 +9,18 @@ namespace DotaMarket.DataLayer.EntityConfiguration
         {
             base.Configure(builder);
 
-            builder.Property(e => e.Name).IsRequired().HasMaxLength(30);
-            builder.Property(e => e.ItemSlot).IsRequired();
-            builder.Property(e => e.Hero).IsRequired();
-            builder.Property(e => e.Rare).IsRequired();
-            builder.Property(e => e.ItemPrice).IsRequired().HasPrecision(10,2);
+            builder.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(30);
+
+            builder.Property(e => e.ItemSlot)
+                .IsRequired();
+
+            builder.Property(e => e.Hero)
+                .IsRequired();
+
+            builder.Property(e => e.Rare)
+                .IsRequired();            
 
             builder.HasOne(e => e.ItemHistory)
                    .WithMany()
