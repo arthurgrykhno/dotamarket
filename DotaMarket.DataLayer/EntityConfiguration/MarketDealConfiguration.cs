@@ -17,11 +17,10 @@ namespace DotaMarket.DataLayer.EntityConfiguration
                 .IsRequired()
                 .HasPrecision(18, 3);
 
-
             builder.HasOne(p => p.Item)
                 .WithMany()
                 .HasForeignKey(p => p.ItemId)
-                .IsRequired(false);
+                .IsRequired();
            
         }
     }

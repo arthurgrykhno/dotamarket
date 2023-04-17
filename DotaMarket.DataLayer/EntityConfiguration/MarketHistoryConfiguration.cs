@@ -1,4 +1,5 @@
 ﻿using DotaMarket.DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DotaMarket.DataLayer.EntityConfiguration
@@ -9,12 +10,27 @@ namespace DotaMarket.DataLayer.EntityConfiguration
         {
             base.Configure(builder);
 
-            builder.Property(e => e.MarketDeal).IsRequired();
-
-            builder.HasOne(e => e.Items)
+            builder.HasOne(e => e.Item)
                 .WithMany()
                 .HasForeignKey(e => e.ItemId)
-                .IsRequired(false);
+                .IsRequired();
+
+            builder.HasOne(e => e.User)
+                .WithMany(e => e.MarketHistory)
+                .HasForeignKey(e => e.UserId)
+                .IsRequired();
+
+            builder.HasOne(e => e.MarketDeal)
+                .WithOne()
+                .HasForeignKey<MarketHistory>(e => e.Id)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasOne(e => e.MarketDeal)
+                .WithMany()
+                .HasForeignKey(e => e.MarketDealId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
