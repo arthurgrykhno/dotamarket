@@ -1,5 +1,4 @@
 ﻿using DotaMarket.DataLayer.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DotaMarket.DataLayer.EntityConfiguration
@@ -13,7 +12,6 @@ namespace DotaMarket.DataLayer.EntityConfiguration
             builder.HasMany(e => e.Items)
                 .WithOne(e => e.Inventory)
                 .HasForeignKey(e => e.InventoryId);
-
 
             builder.HasOne(e => e.User)
                 .WithOne(e => e.Inventory)

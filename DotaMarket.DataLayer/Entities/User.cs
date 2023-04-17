@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace DotaMarket.DataLayer.Entities
+﻿namespace DotaMarket.DataLayer.Entities
 {
     public class User : BaseEntity
     {
@@ -10,13 +8,10 @@ namespace DotaMarket.DataLayer.Entities
         public string Password { get; set; }
         public int? Age { get; set; }
 
-
         public Guid MarketHistoryId { get; set; }
         public IEnumerable<MarketHistory?> MarketHistory { get; set; }
 
-
         public Guid? InventoryId { get; set; }
         public Inventory? Inventory { get; set; }
-
     }
 }

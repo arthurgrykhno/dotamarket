@@ -1,5 +1,4 @@
 ﻿using DotaMarket.DataLayer.Enums;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DotaMarket.DataLayer.Entities
 {

@@ -16,7 +16,6 @@ namespace DotaMarket.DataLayer.EntityConfiguration
                 .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired();
 
-
             builder.HasOne(p => p.Seller)
                 .WithMany()
                 .HasForeignKey(p => p.SellerId)

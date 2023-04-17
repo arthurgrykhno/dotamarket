@@ -12,12 +12,10 @@ namespace DotaMarket.DataLayer.EntityConfiguration
             builder.Property(e => e.ItemSlot)
                 .IsRequired();
 
-
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(30);
 
- 
             builder.Property(e => e.Hero)
                 .IsRequired();
 
