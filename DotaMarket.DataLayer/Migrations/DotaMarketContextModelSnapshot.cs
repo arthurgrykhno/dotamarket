@@ -67,9 +67,6 @@ namespace DotaMarket.DataLayer.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<Guid?>("OrderHistoryRowId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Rare")
                         .HasColumnType("int");
 

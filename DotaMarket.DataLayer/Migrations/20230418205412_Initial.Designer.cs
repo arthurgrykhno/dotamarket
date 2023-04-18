@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotaMarket.DataLayer.Migrations
 {
     [DbContext(typeof(DotaMarketContext))]
-    [Migration("20230418185233_Initial")]
+    [Migration("20230418205412_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -69,9 +69,6 @@ namespace DotaMarket.DataLayer.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
-
-                    b.Property<Guid?>("OrderHistoryRowId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Rare")
                         .HasColumnType("int");
