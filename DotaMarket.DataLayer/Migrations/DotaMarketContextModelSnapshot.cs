@@ -59,9 +59,6 @@ namespace DotaMarket.DataLayer.Migrations
                     b.Property<Guid>("InventoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ItemHistoryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("ItemSlot")
                         .HasColumnType("int");
 
@@ -69,6 +66,9 @@ namespace DotaMarket.DataLayer.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
+
+                    b.Property<Guid?>("OrderHistoryRowId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Rare")
                         .HasColumnType("int");
@@ -81,41 +81,7 @@ namespace DotaMarket.DataLayer.Migrations
 
                     b.HasIndex("InventoryId");
 
-                    b.HasIndex("ItemHistoryId");
-
                     b.ToTable("Items");
-                });
-
-            modelBuilder.Entity("DotaMarket.DataLayer.Entities.ItemHistory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BuyerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreatedAt");
-
-                    b.Property<int>("ItemAction")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("SellerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit")
-                        .HasColumnName("isDeleted");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BuyerId");
-
-                    b.HasIndex("SellerId");
-
-                    b.ToTable("ItemHistories");
                 });
 
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.MarketDeal", b =>
@@ -189,6 +155,43 @@ namespace DotaMarket.DataLayer.Migrations
                     b.ToTable("MarketHistories");
                 });
 
+            modelBuilder.Entity("DotaMarket.DataLayer.Entities.OrderHistoryRow", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BuyerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedAt");
+
+                    b.Property<int>("ItemAction")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SellerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("isDeleted");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("SellerId");
+
+                    b.ToTable("OrderHistoryRows");
+                });
+
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -255,32 +258,7 @@ namespace DotaMarket.DataLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DotaMarket.DataLayer.Entities.ItemHistory", "ItemHistory")
-                        .WithMany()
-                        .HasForeignKey("ItemHistoryId");
-
                     b.Navigation("Inventory");
-
-                    b.Navigation("ItemHistory");
-                });
-
-            modelBuilder.Entity("DotaMarket.DataLayer.Entities.ItemHistory", b =>
-                {
-                    b.HasOne("DotaMarket.DataLayer.Entities.User", "Buyer")
-                        .WithMany()
-                        .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("DotaMarket.DataLayer.Entities.User", "Seller")
-                        .WithMany()
-                        .HasForeignKey("SellerId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Buyer");
-
-                    b.Navigation("Seller");
                 });
 
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.MarketDeal", b =>
@@ -320,9 +298,41 @@ namespace DotaMarket.DataLayer.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("DotaMarket.DataLayer.Entities.OrderHistoryRow", b =>
+                {
+                    b.HasOne("DotaMarket.DataLayer.Entities.User", "Buyer")
+                        .WithMany()
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("DotaMarket.DataLayer.Entities.Item", "Item")
+                        .WithMany("OrderHistoryRow")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DotaMarket.DataLayer.Entities.User", "Seller")
+                        .WithMany()
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("Item");
+
+                    b.Navigation("Seller");
+                });
+
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.Inventory", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("DotaMarket.DataLayer.Entities.Item", b =>
+                {
+                    b.Navigation("OrderHistoryRow");
                 });
 
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.User", b =>

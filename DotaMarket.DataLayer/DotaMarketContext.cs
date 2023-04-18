@@ -11,7 +11,7 @@ namespace DotaMarket.DataLayer
         public DbSet<Item> Items { get; set; }
         public DbSet<MarketDeal> MarketDeals { get; set; }
         public DbSet<MarketHistory> MarketHistories { get; set; }
-        public DbSet<ItemHistory> ItemHistories { get; set; }
+        public DbSet<OrderHistoryRow> OrderHistoryRows { get; set; }
        
         public DotaMarketContext(DbContextOptions<DotaMarketContext> options)
             : base(options)
@@ -22,7 +22,7 @@ namespace DotaMarket.DataLayer
         {
             modelBuilder.ApplyConfiguration(new InventoryConfiguration());
             modelBuilder.ApplyConfiguration(new ItemConfiguration());
-            modelBuilder.ApplyConfiguration(new ItemHistoryConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderHistoryRowConfiguration());
             modelBuilder.ApplyConfiguration(new MarketDealConfiguration());
             modelBuilder.ApplyConfiguration(new MarketHistoryConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());

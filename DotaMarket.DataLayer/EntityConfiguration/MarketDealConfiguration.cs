@@ -20,8 +20,7 @@ namespace DotaMarket.DataLayer.EntityConfiguration
             builder.HasOne(p => p.Item)
                 .WithMany()
                 .HasForeignKey(p => p.ItemId)
-                .IsRequired();
-           
+                .IsRequired();          
         }
     }
 }

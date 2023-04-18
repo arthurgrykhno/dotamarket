@@ -20,12 +20,11 @@ namespace DotaMarket.DataLayer.EntityConfiguration
                 .IsRequired();
 
             builder.Property(e => e.Rare)
-                .IsRequired();            
+                .IsRequired();
 
-            builder.HasOne(e => e.ItemHistory)
-                .WithMany()
-                .HasForeignKey(e => e.ItemHistoryId)
-                .IsRequired(false);
+            builder.HasMany(i => i.OrderHistoryRow)
+            .WithOne(o => o.Item)
+            .HasForeignKey(o => o.ItemId);
 
             builder.HasOne(e => e.Inventory)
                 .WithMany(e => e.Items)
