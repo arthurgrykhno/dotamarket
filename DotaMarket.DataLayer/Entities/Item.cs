@@ -9,7 +9,7 @@ namespace DotaMarket.DataLayer.Entities
         public ItemRare Rare { get; set; }
         public ItemSlot ItemSlot { get; set; }
 
-        public IEnumerable<OrderHistoryRow?> OrderHistoryRow { get; set; }
+        public IEnumerable<OrderHistoryRow?> OrderHistoryRows { get; set; }
 
         public Guid InventoryId { get; set; }
         public Inventory Inventory { get; set; }

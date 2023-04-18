@@ -22,7 +22,7 @@ namespace DotaMarket.DataLayer.EntityConfiguration
             builder.Property(e => e.Rare)
                 .IsRequired();
 
-            builder.HasMany(i => i.OrderHistoryRow)
+            builder.HasMany(i => i.OrderHistoryRows)
             .WithOne(o => o.Item)
             .HasForeignKey(o => o.ItemId);
 

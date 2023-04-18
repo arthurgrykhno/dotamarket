@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotaMarket.DataLayer.Migrations
 {
     [DbContext(typeof(DotaMarketContext))]
-    [Migration("20230418205412_Initial")]
+    [Migration("20230418205702_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -307,7 +307,7 @@ namespace DotaMarket.DataLayer.Migrations
                         .IsRequired();
 
                     b.HasOne("DotaMarket.DataLayer.Entities.Item", "Item")
-                        .WithMany("OrderHistoryRow")
+                        .WithMany("OrderHistoryRows")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -332,7 +332,7 @@ namespace DotaMarket.DataLayer.Migrations
 
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.Item", b =>
                 {
-                    b.Navigation("OrderHistoryRow");
+                    b.Navigation("OrderHistoryRows");
                 });
 
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.User", b =>

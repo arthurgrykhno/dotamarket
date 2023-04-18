@@ -11,7 +11,7 @@ namespace DotaMarket.DataLayer.EntityConfiguration
             base.Configure(builder);
 
             builder.HasOne(x => x.Item)
-                .WithMany(i => i.OrderHistoryRow)
+                .WithMany(i => i.OrderHistoryRows)
                 .HasForeignKey(x => x.ItemId)
                 .OnDelete(DeleteBehavior.Restrict);
 

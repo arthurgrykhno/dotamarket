@@ -304,7 +304,7 @@ namespace DotaMarket.DataLayer.Migrations
                         .IsRequired();
 
                     b.HasOne("DotaMarket.DataLayer.Entities.Item", "Item")
-                        .WithMany("OrderHistoryRow")
+                        .WithMany("OrderHistoryRows")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -329,7 +329,7 @@ namespace DotaMarket.DataLayer.Migrations
 
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.Item", b =>
                 {
-                    b.Navigation("OrderHistoryRow");
+                    b.Navigation("OrderHistoryRows");
                 });
 
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.User", b =>
