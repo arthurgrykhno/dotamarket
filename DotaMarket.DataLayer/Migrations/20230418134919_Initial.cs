@@ -85,7 +85,7 @@ namespace DotaMarket.DataLayer.Migrations
                     Hero = table.Column<int>(type: "int", nullable: false),
                     Rare = table.Column<int>(type: "int", nullable: false),
                     ItemSlot = table.Column<int>(type: "int", nullable: false),
-                    ItemHistoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ItemHistoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     InventoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     isDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -103,8 +103,7 @@ namespace DotaMarket.DataLayer.Migrations
                         name: "FK_Items_ItemHistories_ItemHistoryId",
                         column: x => x.ItemHistoryId,
                         principalTable: "ItemHistories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(

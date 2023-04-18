@@ -59,7 +59,7 @@ namespace DotaMarket.DataLayer.Migrations
                     b.Property<Guid>("InventoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ItemHistoryId")
+                    b.Property<Guid?>("ItemHistoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ItemSlot")
@@ -257,9 +257,7 @@ namespace DotaMarket.DataLayer.Migrations
 
                     b.HasOne("DotaMarket.DataLayer.Entities.ItemHistory", "ItemHistory")
                         .WithMany()
-                        .HasForeignKey("ItemHistoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ItemHistoryId");
 
                     b.Navigation("Inventory");
 

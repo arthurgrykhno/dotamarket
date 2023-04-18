@@ -8,7 +8,7 @@ namespace DotaMarket.DataLayer.Entities
         public Hero Hero { get; set; }
         public ItemRare Rare { get; set; }
         public ItemSlot ItemSlot { get; set; }
-        public Guid ItemHistoryId { get; set; }
+        public Guid? ItemHistoryId { get; set; }
         public ItemHistory? ItemHistory { get; set; }
 
         public Guid InventoryId { get; set; }

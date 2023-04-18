@@ -9,6 +9,6 @@
         public User User { get; set; }
 
         public Guid? MarketDealId { get; set; }
-        public MarketDeal MarketDeal { get; set; }
+        public MarketDeal? MarketDeal { get; set; }
     }
 }

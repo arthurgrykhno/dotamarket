@@ -24,7 +24,8 @@ namespace DotaMarket.DataLayer.EntityConfiguration
 
             builder.HasOne(e => e.ItemHistory)
                 .WithMany()
-                .HasForeignKey(e => e.ItemHistoryId);
+                .HasForeignKey(e => e.ItemHistoryId)
+                .IsRequired(false);
 
             builder.HasOne(e => e.Inventory)
                 .WithMany(e => e.Items)
