@@ -1,4 +1,4 @@
-﻿using Interfaces;
+﻿using Contracts;
 
 namespace DotaMarket.DataLayer.Repository
 {
@@ -11,29 +11,31 @@ namespace DotaMarket.DataLayer.Repository
             _context = context;
         }
 
-        public void Add(T item)
+        public async Task Add(T item)
         {
-            _context.Set<T>().Add(item);
+            await _context.Set<T>().AddAsync(item);
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(T item)
+        public async Task Delete(T item)
         {
-            _context.Set<T>().Remove(item);
+           await _context.Set<T>().Remove(item);
+           await _context.SaveChangesAsync();
         }
 
-        public IEnumerable<T> ReadAll()
+        public Task<IEnumerable<T>> GetAll()
         {
-           return _context.Set<T>();
+            throw new NotImplementedException();
         }
 
-        public T ReadById(int id)
+        public Task<T> FindById(int id)
         {
-            return _context.Set<T>().Find(id); ;
+            throw new NotImplementedException();
         }
 
-        public void Update(T item)
+        public Task Update(T item)
         {
-            _context.Set<T>().Update(item);
+            throw new NotImplementedException();
         }
     }
 }

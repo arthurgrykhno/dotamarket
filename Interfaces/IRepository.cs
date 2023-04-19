@@ -1,11 +1,11 @@
-﻿namespace Interfaces
+﻿namespace Contracts
 {
     public interface IRepository<T>
     {
-        T ReadById(int id);
-        IEnumerable<T> ReadAll();
-        void Add(T item);
-        void Update(T item);
-        void Delete(T item);
+        Task<T> FindById(int id);
+        Task<IEnumerable<T>> GetAll();
+        Task Add(T item);
+        Task Update(T item);
+        Task Delete(T item);
     }
 }

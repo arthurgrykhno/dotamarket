@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotaMarket.Api", "DotaMarke
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotaMarket.DataLayer", "DotaMarket.DataLayer\DotaMarket.DataLayer.csproj", "{1BBFF045-FEE5-4A0A-9751-5C871BBC04C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{BE4FCD85-1FD7-4968-B883-7DACB0AFA3F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Interfaces\Contracts.csproj", "{BE4FCD85-1FD7-4968-B883-7DACB0AFA3F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
