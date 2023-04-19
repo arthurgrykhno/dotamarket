@@ -1,8 +1,10 @@
 ﻿using Contracts;
+using DotaMarket.DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DotaMarket.DataLayer.Repository
 {
-    public class BaseRepository<T> : IRepository<T> where T : class
+    public class BaseRepository<T> : IRepository<T> where T : BaseEntity
     {
         private readonly DotaMarketContext _context;
 
@@ -19,23 +21,26 @@ namespace DotaMarket.DataLayer.Repository
 
         public async Task Delete(T item)
         {
-           await _context.Set<T>().Remove(item);
-           await _context.SaveChangesAsync();
+            var entity = await _context.Set<T>().FindAsync(item.Id);
+            _context.Set<T>().Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().ToListAsync();
         }
 
-        public Task<T> FindById(int id)
+        public async Task<T> FindById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().FindAsync(id);
         }
 
-        public Task Update(T item)
+        public async Task Update(T item)
         {
-            throw new NotImplementedException();
+            var entity = _context.Set<T>().FindAsync(item.Id);
+            _context.Entry(entity).CurrentValues.SetValues(item);
+            await _context.SaveChangesAsync();
         }
     }
 }
