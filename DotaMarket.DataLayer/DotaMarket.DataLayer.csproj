@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Interfaces\Contracts.csproj" />
-    <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

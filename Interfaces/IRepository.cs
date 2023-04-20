@@ -2,10 +2,12 @@
 {
     public interface IRepository<T>
     {
-        Task<T> FindById(int id);
+        T FindById(Guid id);
+        Task<T> FindOneAsync(ISpecification<T> specification);
+        Task<List<T>> FindAsync(ISpecification<T> specification); 
         Task<IEnumerable<T>> GetAll();
-        Task Add(T item);
-        Task Update(T item);
-        Task Delete(T item);
+        Task AddAsync(T item);
+        Task UpdateAsync(T item);
+        Task DeleteAsync(T item);
     }
 }
