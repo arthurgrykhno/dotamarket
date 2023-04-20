@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Interfaces\Contracts.csproj" />
+    <ProjectReference Include="..\DotaMarket.Contracts\DotaMarket.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

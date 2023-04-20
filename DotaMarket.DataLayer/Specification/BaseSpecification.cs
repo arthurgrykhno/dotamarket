@@ -1,12 +1,11 @@
 ﻿using Contracts;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace DotaMarket.DataLayer.Specification
 {
     public abstract class BaseSpecification<T> : ISpecification<T>
     {
-        public Expression<Func<T, bool>> Criteria { get; private set; }
+        public List<Expression<Func<T, bool>>> Criteria { get; private set; }
         public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
         public List<string> IncludeStrings { get; } = new();
         public Expression<Func<T, object>> OrderBy { get; private set; }
@@ -29,19 +28,34 @@ namespace DotaMarket.DataLayer.Specification
             Includes.Add(includeExpression);
         }
 
-        protected virtual void AddOrderBy(Expression<Func<T, object>> orderByExpression)
+        protected void AddOrderBy(Expression<Func<T, object>> orderByExpression)
         {
             OrderBy = orderByExpression;
         }
 
-        protected virtual void AddOrderByDescending(Expression<Func<T, object>> orderByDescendingExpression)
+        protected void AddOrderByDescending(Expression<Func<T, object>> orderByDescendingExpression)
         {
             OrderByDescending = orderByDescendingExpression;
         }
 
-        protected void AddCriteria(Expression<Func<T, bool>> criteria)
+        protected void AddCriteria(Expression<Func<T, bool>> criterion)
         {
-            Criteria = criteria;
+            if (Criteria == null)
+            {
+                Criteria = new List<Expression<Func<T, bool>>>();
+            }
+
+            Criteria.Add(criterion);
+        }
+
+        protected void AddCriteria(IEnumerable<Expression<Func<T, bool>>> criteria)
+        {
+            if (Criteria == null)
+            {
+                Criteria = new List<Expression<Func<T, bool>>>();
+            }
+
+            Criteria.AddRange(criteria);
         }
 
         protected void ApplyOrderBy(Expression<Func<T, object>> orderByExpression) =>
@@ -53,7 +67,7 @@ namespace DotaMarket.DataLayer.Specification
         protected void ApplyGroupBy(Expression<Func<T, object>> groupByExpression) =>
             GroupBy = groupByExpression;
 
-        protected virtual void ApplyPaging(int skip, int take)
+        protected void ApplyPaging(int skip, int take)
         {
             Skip = skip;
             Take = take;

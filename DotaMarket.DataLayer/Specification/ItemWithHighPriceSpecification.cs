@@ -6,7 +6,7 @@ namespace DotaMarket.DataLayer.Specification
     {
         public ItemWithHighPriceSpecification()
         {
-            AddCriteria(u => u.Price >= 200.00m);
+            AddCriteria(deal => deal.Price >= 200.00m);
         }
     }
 }

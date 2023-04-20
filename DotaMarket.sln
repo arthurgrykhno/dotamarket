@@ -4,10 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotaMarket.Api", "DotaMarket.Api\DotaMarket.Api.csproj", "{58D07EE0-0BBF-4605-A04B-ECF8257251FE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A3D311B8-6677-4881-8A3D-3E435FF6215A} = {A3D311B8-6677-4881-8A3D-3E435FF6215A}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotaMarket.DataLayer", "DotaMarket.DataLayer\DotaMarket.DataLayer.csproj", "{1BBFF045-FEE5-4A0A-9751-5C871BBC04C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Interfaces\Contracts.csproj", "{BE4FCD85-1FD7-4968-B883-7DACB0AFA3F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotaMarket.Contracts", "DotaMarket.Contracts\DotaMarket.Contracts.csproj", "{A3D311B8-6677-4881-8A3D-3E435FF6215A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +26,10 @@ Global
 		{1BBFF045-FEE5-4A0A-9751-5C871BBC04C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BBFF045-FEE5-4A0A-9751-5C871BBC04C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BBFF045-FEE5-4A0A-9751-5C871BBC04C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BE4FCD85-1FD7-4968-B883-7DACB0AFA3F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BE4FCD85-1FD7-4968-B883-7DACB0AFA3F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BE4FCD85-1FD7-4968-B883-7DACB0AFA3F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BE4FCD85-1FD7-4968-B883-7DACB0AFA3F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3D311B8-6677-4881-8A3D-3E435FF6215A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3D311B8-6677-4881-8A3D-3E435FF6215A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3D311B8-6677-4881-8A3D-3E435FF6215A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3D311B8-6677-4881-8A3D-3E435FF6215A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

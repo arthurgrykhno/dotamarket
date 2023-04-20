@@ -1,7 +1,7 @@
 ﻿using Contracts;
 using DotaMarket.DataLayer.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using System.Linq.Expressions;
 
 namespace DotaMarket.DataLayer.Repository
 {
@@ -22,32 +22,65 @@ namespace DotaMarket.DataLayer.Repository
 
         public async Task<List<T>> FindAsync(ISpecification<T> specification)
         {
-            var specificationResult = GetQuery(_context.Set<T>(),specification);
+            var specificationResult = GetQuery(_context.Set<T>(), specification);
             return await specificationResult.ToListAsync();
         }
 
-        public async Task AddAsync(T item)
+        public async Task<T> AddAsync(T item)
         {
             await _context.Set<T>().AddAsync(item);
             await _context.SaveChangesAsync();
+            return item;
         }
 
-        public async Task DeleteAsync(T item)
+        public async IAsyncEnumerable<T> AddRangeAsync(IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                await AddAsync(item);
+                yield return item;
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<T> DeleteAsync(T item)
         {
             var entity = await _context.Set<T>().FindAsync(item.Id);
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync();
+            return entity;
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async IAsyncEnumerable<T> DeleteRangeAsync(IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                await DeleteAsync(item);
+                yield return item;
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAllAsync<TEntity>()
         {
             return await _context.Set<T>().ToListAsync();
         }
 
-        public async Task UpdateAsync(T item)
+        public async Task<T> UpdateAsync(T item)
         {
             var entity = _context.Set<T>().FindAsync(item.Id);
             _context.Entry(entity).CurrentValues.SetValues(item);
+            await _context.SaveChangesAsync();
+            return item;
+        }
+
+        public async IAsyncEnumerable<T> UpdateRangeAsync(IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                await UpdateAsync(item);
+                yield return item;
+            }
             await _context.SaveChangesAsync();
         }
 
@@ -56,40 +89,42 @@ namespace DotaMarket.DataLayer.Repository
             return _context.Set<T>().SingleOrDefault(i => i.Id == id);
         }
 
-        public static IQueryable<T> GetQuery(IQueryable<T> inputQuery,
+        private static IQueryable<T> GetQuery(IQueryable<T> inputQuery,
             ISpecification<T> specification)
         {
             var query = inputQuery;
 
-            if (specification.Criteria is not null)
+            if (specification.Criteria != null && specification.Criteria.Any())
             {
-                query = query.Where(specification.Criteria);
+                var combinedCriteria = specification.Criteria.Aggregate(
+                    (c1, c2) => Expression.Lambda<Func<T, bool>>(
+                        Expression.AndAlso(c1.Body, c2.Body), c1.Parameters));
+                query = query.Where(combinedCriteria);
             }
-
             query = specification.Includes.Aggregate(query, (current, include) => current.Include(include));
 
             query = specification.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
 
-            if (specification.OrderBy is not null)
+            if (specification.OrderBy != null)
             {
                 query = query.OrderBy(specification.OrderBy);
             }
-            else if (specification.OrderByDescending is not null)
+            else if (specification.OrderByDescending != null)
             {
                 query = query.OrderByDescending(specification.OrderByDescending);
             }
 
-            if (specification.GroupBy is not null)
+            if (specification.GroupBy != null)
             {
                 query = query.GroupBy(specification.GroupBy).SelectMany(x => x);
             }
 
             if (specification.IsPagingEnabled)
             {
-                query = query.Skip(specification.Skip - 1)
+                query = query
+                    .Skip(specification.Skip - 1)
                     .Take(specification.Take);
             }
-
             return query;
         }
     }
