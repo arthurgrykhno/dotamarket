@@ -35,27 +35,20 @@ namespace DotaMarket.DataLayer.Repository
 
         public async Task<IEnumerable<T>> AddRangeAsync<TEntity>(IEnumerable<T> items)
         {
-            foreach (var item in items)
-            {
-                _context.Set<T>().AddRange(item);
-            }
-            _context.SaveChanges();
+            await _context.Set<T>().AddRangeAsync(items);
+            await _context.SaveChangesAsync();
             return items;
         }
 
-        public async void DeleteAsync<TEntity>(T item)
-        {
-            var entity = await _context.Set<T>().FindAsync(item.Id);
-            _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();         
+        public void DeleteAsync<TEntity>(T item)
+        {  
+             _context.Set<T>().Remove(item);
+             _context.SaveChanges();         
         }
 
-        public  void DeleteRangeAsync<TEntity>(IEnumerable<T> items)
+        public void DeleteRangeAsync<TEntity>(IEnumerable<T> items)
         {
-            foreach (var item in items)
-            {
-                _context.Set<T>().RemoveRange(item);
-            }
+            _context.Set<T>().RemoveRange(items);
             _context.SaveChanges();  
         }
 
@@ -74,10 +67,7 @@ namespace DotaMarket.DataLayer.Repository
 
         public async Task<IEnumerable<T>> UpdateRangeAsync<TEntity>(IEnumerable<T> items)
         {
-            foreach (var item in items)
-            {
-                _context.Set<T>().UpdateRange(item);
-            }
+            _context.Set<T>().UpdateRange(items);
             _context.SaveChanges();
             return items;
         }
