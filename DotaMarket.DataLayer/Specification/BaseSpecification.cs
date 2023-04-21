@@ -5,7 +5,7 @@ namespace DotaMarket.DataLayer.Specification
 {
     public abstract class BaseSpecification<T> : ISpecification<T>
     {
-        public List<Expression<Func<T, bool>>> Criteria { get; private set; }
+        public List<Expression<Func<T, bool>>> Criterias { get; private set; }
         public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
         public List<string> IncludeStrings { get; } = new();
         public Expression<Func<T, object>> OrderBy { get; private set; }
@@ -23,6 +23,7 @@ namespace DotaMarket.DataLayer.Specification
                 AddInclude(include);
             }
         }
+
         protected void AddInclude(Expression<Func<T, object>> includeExpression)
         {
             Includes.Add(includeExpression);
@@ -38,24 +39,14 @@ namespace DotaMarket.DataLayer.Specification
             OrderByDescending = orderByDescendingExpression;
         }
 
-        protected void AddCriteria(Expression<Func<T, bool>> criterion)
+        protected void AddCriteria(Expression<Func<T, bool>> criteria)
         {
-            if (Criteria == null)
-            {
-                Criteria = new List<Expression<Func<T, bool>>>();
-            }
-
-            Criteria.Add(criterion);
+            Criterias.Add(criteria);
         }
 
         protected void AddCriteria(IEnumerable<Expression<Func<T, bool>>> criteria)
         {
-            if (Criteria == null)
-            {
-                Criteria = new List<Expression<Func<T, bool>>>();
-            }
-
-            Criteria.AddRange(criteria);
+            Criterias.AddRange(criteria);
         }
 
         protected void ApplyOrderBy(Expression<Func<T, object>> orderByExpression) =>
@@ -72,7 +63,6 @@ namespace DotaMarket.DataLayer.Specification
             Skip = skip;
             Take = take;
             IsPagingEnabled = true;
-        }
-       
+        }      
     }
 }

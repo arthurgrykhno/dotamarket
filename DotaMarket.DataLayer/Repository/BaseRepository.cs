@@ -14,51 +14,49 @@ namespace DotaMarket.DataLayer.Repository
             _context = context;
         }
       
-        public async Task<T> FindOneAsync(ISpecification<T> specification)
+        public async Task<T> FindOneAsync<TEntity>(ISpecification<T> specification)
         {
             var specificationResult = GetQuery(_context.Set<T>(),specification);
             return await specificationResult.FirstOrDefaultAsync();
         }
 
-        public async Task<List<T>> FindAsync(ISpecification<T> specification)
+        public async Task<IEnumerable<T>> FindAsync<TEntity>(ISpecification<T> specification)
         {
             var specificationResult = GetQuery(_context.Set<T>(), specification);
             return await specificationResult.ToListAsync();
         }
 
-        public async Task<T> AddAsync(T item)
+        public async Task<T> AddAsync<TEntity>(T item)
         {
             await _context.Set<T>().AddAsync(item);
             await _context.SaveChangesAsync();
             return item;
         }
 
-        public async IAsyncEnumerable<T> AddRangeAsync(IEnumerable<T> items)
+        public async Task<IEnumerable<T>> AddRangeAsync<TEntity>(IEnumerable<T> items)
         {
             foreach (var item in items)
             {
-                await AddAsync(item);
-                yield return item;
+                _context.Set<T>().AddRange(item);
             }
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
+            return items;
         }
 
-        public async Task<T> DeleteAsync(T item)
+        public async void DeleteAsync<TEntity>(T item)
         {
             var entity = await _context.Set<T>().FindAsync(item.Id);
             _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();
-            return entity;
+            await _context.SaveChangesAsync();         
         }
 
-        public async IAsyncEnumerable<T> DeleteRangeAsync(IEnumerable<T> items)
+        public  void DeleteRangeAsync<TEntity>(IEnumerable<T> items)
         {
             foreach (var item in items)
             {
-                await DeleteAsync(item);
-                yield return item;
+                _context.Set<T>().RemoveRange(item);
             }
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();  
         }
 
         public async Task<IEnumerable<T>> GetAllAsync<TEntity>()
@@ -66,7 +64,7 @@ namespace DotaMarket.DataLayer.Repository
             return await _context.Set<T>().ToListAsync();
         }
 
-        public async Task<T> UpdateAsync(T item)
+        public async Task<T> UpdateAsync<TEntity>(T item)
         {
             var entity = _context.Set<T>().FindAsync(item.Id);
             _context.Entry(entity).CurrentValues.SetValues(item);
@@ -74,17 +72,17 @@ namespace DotaMarket.DataLayer.Repository
             return item;
         }
 
-        public async IAsyncEnumerable<T> UpdateRangeAsync(IEnumerable<T> items)
+        public async Task<IEnumerable<T>> UpdateRangeAsync<TEntity>(IEnumerable<T> items)
         {
             foreach (var item in items)
             {
-                await UpdateAsync(item);
-                yield return item;
+                _context.Set<T>().UpdateRange(item);
             }
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
+            return items;
         }
 
-        public T FindById(Guid id)
+        public T FindById<TEntity>(Guid id)
         {
             return _context.Set<T>().SingleOrDefault(i => i.Id == id);
         }
@@ -94,13 +92,14 @@ namespace DotaMarket.DataLayer.Repository
         {
             var query = inputQuery;
 
-            if (specification.Criteria != null && specification.Criteria.Any())
+            if (specification.Criterias != null && specification.Criterias.Any())
             {
-                var combinedCriteria = specification.Criteria.Aggregate(
+                var combinedCriteria = specification.Criterias.Aggregate(
                     (c1, c2) => Expression.Lambda<Func<T, bool>>(
                         Expression.AndAlso(c1.Body, c2.Body), c1.Parameters));
                 query = query.Where(combinedCriteria);
             }
+
             query = specification.Includes.Aggregate(query, (current, include) => current.Include(include));
 
             query = specification.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
