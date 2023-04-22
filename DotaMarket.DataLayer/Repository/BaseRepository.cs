@@ -40,16 +40,16 @@ namespace DotaMarket.DataLayer.Repository
             return items;
         }
 
-        public void DeleteAsync<TEntity>(T item)
-        {  
-             _context.Set<T>().Remove(item);
-             _context.SaveChanges();         
+        public async Task DeleteAsync<TEntity>(T item)
+        {
+            _context.Set<T>().Remove(item);
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteRangeAsync<TEntity>(IEnumerable<T> items)
+        public async Task DeleteRangeAsync<TEntity>(IEnumerable<T> items)
         {
             _context.Set<T>().RemoveRange(items);
-            _context.SaveChanges();  
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync<TEntity>()
@@ -68,7 +68,7 @@ namespace DotaMarket.DataLayer.Repository
         public async Task<IEnumerable<T>> UpdateRangeAsync<TEntity>(IEnumerable<T> items)
         {
             _context.Set<T>().UpdateRange(items);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return items;
         }
 

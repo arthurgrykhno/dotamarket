@@ -8,9 +8,9 @@
         Task<IEnumerable<T>> GetAllAsync<TEntity>();
         Task<T> AddAsync<TEntity>(T item);
         Task<T> UpdateAsync<TEntity>(T item);
-        void DeleteAsync<TEntity>(T item);
+        Task DeleteAsync<TEntity>(T item);
         Task<IEnumerable<T>> AddRangeAsync<TEntity>(IEnumerable<T> item);
         Task<IEnumerable<T>> UpdateRangeAsync<TEntity>(IEnumerable<T> item);
-        void DeleteRangeAsync<TEntity>(IEnumerable<T> item);
+        Task DeleteRangeAsync<TEntity>(IEnumerable<T> item);
     }
 }
