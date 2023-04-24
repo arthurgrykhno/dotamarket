@@ -9,8 +9,7 @@ namespace DotaMarket.DataLayer.Tests
     {
         private DbContextOptions<DotaMarketContext> _options;
 
-        [SetUp]
-        public void Setup()
+        public BaseRepositoryTests()
         {
             _options = new DbContextOptionsBuilder<DotaMarketContext>()
                  .UseInMemoryDatabase(databaseName: "TestDatabase")
@@ -32,7 +31,7 @@ namespace DotaMarket.DataLayer.Tests
             }
         }
 
-        [Test]
+        [Fact]
         public async Task AddAsync_ShouldAddEntityToDatabase()
         {
             var user = new User
@@ -55,7 +54,7 @@ namespace DotaMarket.DataLayer.Tests
             result.Should().BeEquivalentTo(user);
         }
 
-        [Test]
+        [Fact]
         public async Task UpdateAsync_ShouldUpdateEntityInDatabase()
         {
             var user = new User
@@ -79,7 +78,7 @@ namespace DotaMarket.DataLayer.Tests
             result.Should().BeEquivalentTo(user);
         }
 
-        [Test]
+        [Fact]
         public async Task DeleteAsync_ShouldRemoveEntityFromDatabase()
         {
             var user = new User
@@ -102,7 +101,7 @@ namespace DotaMarket.DataLayer.Tests
             result.Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public async Task FindById_ShouldReturnEntityFromDatabase()
         {
             var userId = Guid.NewGuid();
@@ -126,7 +125,7 @@ namespace DotaMarket.DataLayer.Tests
             result.Should().BeEquivalentTo(user);
         }
 
-        [Test]
+        [Fact]
         public async Task AddRangeAsync_ShouldAddRangeEntitiesInDataBase()
         {
             var users = new List<User>
@@ -171,7 +170,7 @@ namespace DotaMarket.DataLayer.Tests
             }
         }
 
-        [Test]
+        [Fact]
         public async Task UpdateRangeAsync_ShouldUpdateEntitiesInDatabase()
         {
             var users = new List<User>
@@ -226,7 +225,7 @@ namespace DotaMarket.DataLayer.Tests
             }
         }
 
-        [Test]
+        [Fact]
         public async Task DeleteRangeAsync_ShouldRemoveEntitiesFromDatabase()
         {
             var users = new List<User>
@@ -268,7 +267,7 @@ namespace DotaMarket.DataLayer.Tests
 
                 foreach (var user in users)
                 {
-                    var deletedUser =  userRepository.FindById<User>(user.Id);
+                    var deletedUser = userRepository.FindById<User>(user.Id);
                     deletedUser.Should().BeNull();
                 }
             }
