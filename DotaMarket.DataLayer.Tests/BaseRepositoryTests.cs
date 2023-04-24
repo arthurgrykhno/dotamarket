@@ -7,7 +7,9 @@ namespace DotaMarket.DataLayer.Tests
 {
     public class BaseRepositoryTests
     {
-        private DbContextOptions<DotaMarketContext> _options;
+        private readonly DbContextOptions<DotaMarketContext> _options;
+        private readonly BaseRepository<User> _sut;
+        private readonly CreateUser _createUser;
 
         public BaseRepositoryTests()
         {
@@ -15,41 +17,176 @@ namespace DotaMarket.DataLayer.Tests
                  .UseInMemoryDatabase(databaseName: "TestDatabase")
                  .Options;
 
+            _createUser = new CreateUser();
+            _sut = new BaseRepository<User>(new DotaMarketContext(_options));
             InitializeDatabaseValues();
-
-
         }
+
         protected void InitializeDatabaseValues()
         {
             using (var context = new DotaMarketContext(_options))
             {
-                context.Users.Add(new User
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "John",
-                    Email = "asdasdasdasd",
-                    Login = "aaaaa",
-                    Password = "213123asd",
-                    MarketHistoryId = Guid.NewGuid()
-                });
-
+                var users = _createUser.CreateUsers();
+                context.Users.AddRange(users);
                 context.SaveChanges();
             }
         }
-        public User CreateNewUser(Guid Id, string name, string email, string login, string password)
+        
+        [Fact]
+        public async Task AddAsync_ShouldAddEntityToDatabase()
         {
-            var user = new User
-            {
-                Id = Guid.NewGuid(),
-                Name = name,
-                Email = email,
-                Login = login,
-                Password = password,
-                MarketHistoryId = Guid.NewGuid()
-            };
-            return user;
+            //Arrange
+            var createUser = new CreateUser();
+            var users = createUser.CreateUsers();
+            var user = users.First();
+
+            using var context = new DotaMarketContext(_options);
+            var _sut = new BaseRepository<User>(context);
+
+            //Act
+            await _sut.AddAsync<User>(user);
+            var result = _sut.FindById<User>(user.Id);
+
+            //Assert
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(user);
         }
 
+        [Fact]
+        public async Task UpdateAsync_ShouldUpdateEntityInDatabase()
+        {
+            //Arrange
+            var createUser = new CreateUser();
+            var users = createUser.CreateUsers();
+            var user = users.First();
+            using var context = new DotaMarketContext(_options);
+            var _sut = new BaseRepository<User>(context);
+            await _sut.AddAsync<User>(user);
+            
+            //Act
+            user.Name = "Test1";
+            _sut.UpdateAsync<User>(user);
+            var result = _sut.FindById<User>(user.Id);
+
+            //Assert
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(user);
+        }
+
+        [Fact]
+        public async Task DeleteAsync_ShouldRemoveEntityFromDatabase()
+        {
+            //Arrange 
+            var createUser = new CreateUser();
+            var users = createUser.CreateUsers();
+            var user = users.First();
+
+            using var context = new DotaMarketContext(_options);
+            var _sut = new BaseRepository<User>(context);
+            await _sut.AddAsync<User>(user);
+            //Act
+            await _sut.DeleteAsync<User>(user);
+            var result = _sut.FindById<User>(user.Id);
+
+            //Assert
+            result.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task FindById_ShouldReturnEntityFromDatabase()
+        {
+            //Arrange
+            var createUser = new CreateUser();
+            var users = createUser.CreateUsers();
+            var user = users.First();
+
+            using var context = new DotaMarketContext(_options);
+            var _sut = new BaseRepository<User>(context);
+            await _sut.AddAsync<User>(user);
+
+            //Act
+            var result = _sut.FindById<User>(user.Id);
+
+            //Assert
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(user);
+        }
+
+        [Fact]
+        public async Task AddRangeAsync_ShouldAddRangeEntitiesInDataBase()
+        {
+            //Arrange
+            var createUser = new CreateUser();
+            var users = createUser.CreateUsers();
+
+            using (var context = new DotaMarketContext(_options))
+            {
+                var _sut = new BaseRepository<User>(context);
+                
+                //Act
+                var addUsers = await _sut.AddRangeAsync<User>(users);
+
+                //Assert
+                addUsers.Should().BeEquivalentTo(users);
+                context.Users.Should().HaveCount(6);
+            }
+        }
+
+        [Fact]
+        public async Task UpdateRangeAsync_ShouldUpdateEntitiesInDatabase()
+        {
+            //Arrange
+            var createUser = new CreateUser();
+            var users = createUser.CreateUsers();
+
+            using (var context = new DotaMarketContext(_options))
+            {
+                var _sut = new BaseRepository<User>(context);
+                var addUsers = await _sut.AddRangeAsync<User>(users);
+
+                //Act
+                foreach (var user in users)
+                {
+                    user.Name = "Updated Name";
+                }
+
+                _sut.UpdateRangeAsync<User>(users);
+
+                //Assert
+                foreach (var user in users)
+                {
+                    var updatedUser = _sut.FindById<User>(user.Id);
+                    updatedUser.Should().NotBeNull();
+                    updatedUser.Name.Should().Be("Updated Name");
+                }
+            }
+        }
+
+        [Fact]
+        public async Task DeleteRangeAsync_ShouldRemoveEntitiesFromDatabase()
+        {
+            //Arrange
+            var createUser = new CreateUser();
+            var users = createUser.CreateUsers();
+
+            using (var context = new DotaMarketContext(_options))
+            {
+                var _sut = new BaseRepository<User>(context);
+                await _sut.AddRangeAsync<User>(users);
+                //Act
+                await _sut.DeleteRangeAsync<User>(users);
+
+                //Assert
+                foreach (var user in users)
+                {
+                    var deletedUser = _sut.FindById<User>(user.Id);
+                    deletedUser.Should().BeNull();
+                }
+            }
+        }     
+    }  
+    public class CreateUser
+    {
         public List<User> CreateUsers()
         {
             var users = new List<User>
@@ -84,129 +221,6 @@ namespace DotaMarket.DataLayer.Tests
             };
 
             return users;
-        }
-
-        [Fact]
-        public async Task AddAsync_ShouldAddEntityToDatabase()
-        {
-            var user = CreateNewUser(Guid.NewGuid(), "Alice", "alice@example.com", "alice", "123456");
-
-            using var context = new DotaMarketContext(_options);
-            var userRepository = new BaseRepository<User>(context);
-
-            await userRepository.AddAsync<User>(user);
-            var result = userRepository.FindById<User>(user.Id);
-
-            result.Should().NotBeNull();
-            result.Should().BeEquivalentTo(user);
-        }
-
-        [Fact]
-        public async Task UpdateAsync_ShouldUpdateEntityInDatabase()
-        {
-            var user = CreateNewUser(Guid.NewGuid(), "Alice", "alice@example.com", "alice", "123456");
-            using var context = new DotaMarketContext(_options);
-            var userRepository = new BaseRepository<User>(context);
-            await userRepository.AddAsync<User>(user);
-
-            user.Name = "Test1";
-            userRepository.UpdateAsync<User>(user);
-            var result = userRepository.FindById<User>(user.Id);
-
-            result.Should().NotBeNull();
-            result.Should().BeEquivalentTo(user);
-        }
-
-        [Fact]
-        public async Task DeleteAsync_ShouldRemoveEntityFromDatabase()
-        {
-            var user = CreateNewUser(Guid.NewGuid(), "Alice", "alice@example.com", "alice", "123456");
-
-            using var context = new DotaMarketContext(_options);
-            var userRepository = new BaseRepository<User>(context);
-            await userRepository.AddAsync<User>(user);
-
-            await userRepository.DeleteAsync<User>(user);
-            var result = userRepository.FindById<User>(user.Id);
-
-            result.Should().BeNull();
-        }
-
-        [Fact]
-        public async Task FindById_ShouldReturnEntityFromDatabase()
-        {
-            var userId = Guid.NewGuid();
-            var user = CreateNewUser(userId, "Alice", "alice@example.com", "alice", "123456");
-
-            using var context = new DotaMarketContext(_options);
-            var userRepository = new BaseRepository<User>(context);
-            await userRepository.AddAsync<User>(user);
-
-            var result = userRepository.FindById<User>(user.Id);
-
-            result.Should().NotBeNull();
-            result.Should().BeEquivalentTo(user);
-        }
-
-        [Fact]
-        public async Task AddRangeAsync_ShouldAddRangeEntitiesInDataBase()
-        {
-            var users = CreateUsers();
-
-            using (var context = new DotaMarketContext(_options))
-            {
-                var repository = new BaseRepository<User>(context);
-
-                var addUsers = await repository.AddRangeAsync<User>(users);
-
-                addUsers.Should().BeEquivalentTo(users);
-                context.Users.Should().HaveCount(4);
-            }
-        }
-
-        [Fact]
-        public async Task UpdateRangeAsync_ShouldUpdateEntitiesInDatabase()
-        {
-            var users = CreateUsers();
-
-            using (var context = new DotaMarketContext(_options))
-            {
-                var repository = new BaseRepository<User>(context);
-                var addUsers = await repository.AddRangeAsync<User>(users);
-
-                foreach (var user in users)
-                {
-                    user.Name = "Updated Name";
-                }
-
-                repository.UpdateRangeAsync<User>(users);
-
-                foreach (var user in users)
-                {
-                    var updatedUser = repository.FindById<User>(user.Id);
-                    updatedUser.Should().NotBeNull();
-                    updatedUser.Name.Should().Be("Updated Name");
-                }
-            }
-        }
-
-        [Fact]
-        public async Task DeleteRangeAsync_ShouldRemoveEntitiesFromDatabase()
-        {
-            var users = CreateUsers();
-
-            using (var context = new DotaMarketContext(_options))
-            {
-                var userRepository = new BaseRepository<User>(context);
-                await userRepository.AddRangeAsync<User>(users);
-                await userRepository.DeleteRangeAsync<User>(users);
-
-                foreach (var user in users)
-                {
-                    var deletedUser = userRepository.FindById<User>(user.Id);
-                    deletedUser.Should().BeNull();
-                }
-            }
         }
     }
 }
