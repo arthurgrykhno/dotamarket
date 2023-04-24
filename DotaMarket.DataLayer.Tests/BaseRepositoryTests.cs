@@ -1,16 +1,14 @@
-using Contracts;
 using DotaMarket.DataLayer.Entities;
 using DotaMarket.DataLayer.Repository;
-using DotaMarket.DataLayer.Specification;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 
 namespace DotaMarket.DataLayer.Tests
 {
     public class BaseRepositoryTests
     {
         private DbContextOptions<DotaMarketContext> _options;
+
         [SetUp]
         public void Setup()
         {
@@ -29,6 +27,7 @@ namespace DotaMarket.DataLayer.Tests
                     Password = "213123asd",
                     MarketHistoryId = Guid.NewGuid()
                 });
+
                 context.SaveChanges();
             }
         }
@@ -116,6 +115,7 @@ namespace DotaMarket.DataLayer.Tests
                 Password = "123456",
                 MarketHistoryId = Guid.NewGuid()
             };
+
             using var context = new DotaMarketContext(_options);
             var userRepository = new BaseRepository<User>(context);
             await userRepository.AddAsync<User>(user);
@@ -204,6 +204,7 @@ namespace DotaMarket.DataLayer.Tests
                    MarketHistoryId = Guid.NewGuid()
                }
             };
+
             using (var context = new DotaMarketContext(_options))
             {
                 var repository = new BaseRepository<User>(context);
@@ -258,20 +259,18 @@ namespace DotaMarket.DataLayer.Tests
                    MarketHistoryId = Guid.NewGuid()
                }
             };
+
             using (var context = new DotaMarketContext(_options))
             {
                 var userRepository = new BaseRepository<User>(context);
                 await userRepository.AddRangeAsync<User>(users);
                 await userRepository.DeleteRangeAsync<User>(users);
 
-
-
                 foreach (var user in users)
                 {
                     var deletedUser =  userRepository.FindById<User>(user.Id);
                     deletedUser.Should().BeNull();
                 }
-
             }
         }
     }
