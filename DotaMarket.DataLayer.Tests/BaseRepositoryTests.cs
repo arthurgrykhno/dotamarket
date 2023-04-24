@@ -15,6 +15,12 @@ namespace DotaMarket.DataLayer.Tests
                  .UseInMemoryDatabase(databaseName: "TestDatabase")
                  .Options;
 
+            InitializeDatabaseValues();
+
+
+        }
+        protected void InitializeDatabaseValues()
+        {
             using (var context = new DotaMarketContext(_options))
             {
                 context.Users.Add(new User
@@ -30,19 +36,60 @@ namespace DotaMarket.DataLayer.Tests
                 context.SaveChanges();
             }
         }
-
-        [Fact]
-        public async Task AddAsync_ShouldAddEntityToDatabase()
+        public User CreateNewUser(Guid Id, string name, string email, string login, string password)
         {
             var user = new User
             {
                 Id = Guid.NewGuid(),
-                Name = "Alice",
-                Email = "alice@example.com",
-                Login = "alice",
-                Password = "123456",
+                Name = name,
+                Email = email,
+                Login = login,
+                Password = password,
                 MarketHistoryId = Guid.NewGuid()
             };
+            return user;
+        }
+
+        public List<User> CreateUsers()
+        {
+            var users = new List<User>
+            {
+               new User
+               {
+                   Id = Guid.NewGuid(),
+                   Name = "Alice",
+                   Email = "alice@example.com",
+                   Login = "alice",
+                   Password = "123456",
+                   MarketHistoryId = Guid.NewGuid()
+               },
+               new User
+               {
+                   Id = Guid.NewGuid(),
+                   Name = "Bob",
+                   Email = "bob@example.com",
+                   Login = "bob",
+                   Password = "123456",
+                   MarketHistoryId = Guid.NewGuid()
+               },
+               new User
+               {
+                   Id = Guid.NewGuid(),
+                   Name = "Charlie",
+                   Email = "charlie@example.com",
+                   Login = "charlie",
+                   Password = "123456",
+                   MarketHistoryId = Guid.NewGuid()
+               }
+            };
+
+            return users;
+        }
+
+        [Fact]
+        public async Task AddAsync_ShouldAddEntityToDatabase()
+        {
+            var user = CreateNewUser(Guid.NewGuid(), "Alice", "alice@example.com", "alice", "123456");
 
             using var context = new DotaMarketContext(_options);
             var userRepository = new BaseRepository<User>(context);
@@ -57,15 +104,7 @@ namespace DotaMarket.DataLayer.Tests
         [Fact]
         public async Task UpdateAsync_ShouldUpdateEntityInDatabase()
         {
-            var user = new User
-            {
-                Id = Guid.NewGuid(),
-                Name = "Alice",
-                Email = "alice@example.com",
-                Login = "alice",
-                Password = "123456",
-                MarketHistoryId = Guid.NewGuid()
-            };
+            var user = CreateNewUser(Guid.NewGuid(), "Alice", "alice@example.com", "alice", "123456");
             using var context = new DotaMarketContext(_options);
             var userRepository = new BaseRepository<User>(context);
             await userRepository.AddAsync<User>(user);
@@ -81,15 +120,7 @@ namespace DotaMarket.DataLayer.Tests
         [Fact]
         public async Task DeleteAsync_ShouldRemoveEntityFromDatabase()
         {
-            var user = new User
-            {
-                Id = Guid.NewGuid(),
-                Name = "Alice",
-                Email = "alice@example.com",
-                Login = "alice",
-                Password = "123456",
-                MarketHistoryId = Guid.NewGuid()
-            };
+            var user = CreateNewUser(Guid.NewGuid(), "Alice", "alice@example.com", "alice", "123456");
 
             using var context = new DotaMarketContext(_options);
             var userRepository = new BaseRepository<User>(context);
@@ -105,15 +136,7 @@ namespace DotaMarket.DataLayer.Tests
         public async Task FindById_ShouldReturnEntityFromDatabase()
         {
             var userId = Guid.NewGuid();
-            var user = new User
-            {
-                Id = userId,
-                Name = "Alice",
-                Email = "alice@example.com",
-                Login = "alice",
-                Password = "123456",
-                MarketHistoryId = Guid.NewGuid()
-            };
+            var user = CreateNewUser(userId, "Alice", "alice@example.com", "alice", "123456");
 
             using var context = new DotaMarketContext(_options);
             var userRepository = new BaseRepository<User>(context);
@@ -128,36 +151,7 @@ namespace DotaMarket.DataLayer.Tests
         [Fact]
         public async Task AddRangeAsync_ShouldAddRangeEntitiesInDataBase()
         {
-            var users = new List<User>
-            {
-               new User
-               {
-                   Id = Guid.NewGuid(),
-                   Name = "Alice",
-                   Email = "alice@example.com",
-                   Login = "alice",
-                   Password = "123456",
-                   MarketHistoryId = Guid.NewGuid()
-               },
-               new User
-               {
-                   Id = Guid.NewGuid(),
-                   Name = "Bob",
-                   Email = "bob@example.com",
-                   Login = "bob",
-                   Password = "123456",
-                   MarketHistoryId = Guid.NewGuid()
-               },
-               new User
-               {
-                   Id = Guid.NewGuid(),
-                   Name = "Charlie",
-                   Email = "charlie@example.com",
-                   Login = "charlie",
-                   Password = "123456",
-                   MarketHistoryId = Guid.NewGuid()
-               }
-            };
+            var users = CreateUsers();
 
             using (var context = new DotaMarketContext(_options))
             {
@@ -173,36 +167,7 @@ namespace DotaMarket.DataLayer.Tests
         [Fact]
         public async Task UpdateRangeAsync_ShouldUpdateEntitiesInDatabase()
         {
-            var users = new List<User>
-            {
-               new User
-               {
-                   Id = Guid.NewGuid(),
-                   Name = "Alice",
-                   Email = "alice@example.com",
-                   Login = "alice",
-                   Password = "123456",
-                   MarketHistoryId = Guid.NewGuid()
-               },
-               new User
-               {
-                   Id = Guid.NewGuid(),
-                   Name = "Bob",
-                   Email = "bob@example.com",
-                   Login = "bob",
-                   Password = "123456",
-                   MarketHistoryId = Guid.NewGuid()
-               },
-               new User
-               {
-                   Id = Guid.NewGuid(),
-                   Name = "Charlie",
-                   Email = "charlie@example.com",
-                   Login = "charlie",
-                   Password = "123456",
-                   MarketHistoryId = Guid.NewGuid()
-               }
-            };
+            var users = CreateUsers();
 
             using (var context = new DotaMarketContext(_options))
             {
@@ -228,36 +193,7 @@ namespace DotaMarket.DataLayer.Tests
         [Fact]
         public async Task DeleteRangeAsync_ShouldRemoveEntitiesFromDatabase()
         {
-            var users = new List<User>
-            {
-               new User
-               {
-                   Id = Guid.NewGuid(),
-                   Name = "Alice",
-                   Email = "alice@example.com",
-                   Login = "alice",
-                   Password = "123456",
-                   MarketHistoryId = Guid.NewGuid()
-               },
-               new User
-               {
-                   Id = Guid.NewGuid(),
-                   Name = "Bob",
-                   Email = "bob@example.com",
-                   Login = "bob",
-                   Password = "123456",
-                   MarketHistoryId = Guid.NewGuid()
-               },
-               new User
-               {
-                   Id = Guid.NewGuid(),
-                   Name = "Charlie",
-                   Email = "charlie@example.com",
-                   Login = "charlie",
-                   Password = "123456",
-                   MarketHistoryId = Guid.NewGuid()
-               }
-            };
+            var users = CreateUsers();
 
             using (var context = new DotaMarketContext(_options))
             {
