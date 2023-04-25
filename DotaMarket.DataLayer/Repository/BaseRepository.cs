@@ -59,8 +59,7 @@ namespace DotaMarket.DataLayer.Repository
 
         public async Task<T> UpdateAsync<TEntity>(T item)
         {
-            var entity = _context.Set<T>().FindAsync(item.Id);
-            _context.Entry(entity).CurrentValues.SetValues(item);
+            _context.Entry(item).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return item;
         }
