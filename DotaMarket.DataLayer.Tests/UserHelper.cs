@@ -1,4 +1,6 @@
 ﻿using DotaMarket.DataLayer.Entities;
+using Microsoft.EntityFrameworkCore;
+using Moq;
 
 namespace DotaMarket.DataLayer.Tests
 {
@@ -10,7 +12,7 @@ namespace DotaMarket.DataLayer.Tests
             {
                new User
                {
-                   Id = Guid.Parse("2cc76ef4-ab51-4acb-bd24-599513425207"),
+                   Id = Guid.NewGuid(),
                    Name = "Alice",
                    Email = "alice@example.com",
                    Login = "alice",
@@ -43,7 +45,7 @@ namespace DotaMarket.DataLayer.Tests
         {
             var user = new User
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("2cc76ef4-ab51-4acb-bd24-599513425207"),
                 Name = "Alice",
                 Email = "alice@example.com",
                 Login = "alice",
