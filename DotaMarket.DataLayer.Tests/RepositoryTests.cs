@@ -25,15 +25,21 @@ namespace DotaMarket.DataLayer.Tests
         {
             // Arrange
             var user = _userHelper.GetUser();
-            _contextMock.Setup(x => x.AddAsync(It.IsAny<User>(), default))
-                            .ReturnsAsync(Mock.Of<EntityEntry<User>>);
+
+            _contextMock
+                .Setup(x => x.Set<User>())
+                .Returns(Mock.Of<DbSet<User>>);
+
+            _contextMock
+                .Setup(x => x.AddAsync(It.IsAny<User>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Mock.Of<EntityEntry<User>>);
 
             //Act
             await _sut.AddAsync<User>(user);
 
             //Assert
             _contextMock.Verify(x => x.Set<User>(), Times.Once());
-            _contextMock.Verify(x => x.AddAsync(It.IsAny<User>(), It.IsAny<CancellationToken>()), Times.Once);
+            _contextMock.Verify(x => x.Set<User>().AddAsync(It.IsAny<User>(), It.IsAny<CancellationToken>()), Times.Once);
             _contextMock.Verify(x => x.SaveChangesAsync(default), Times.Once());
             user.Should().NotBeNull();
         }
