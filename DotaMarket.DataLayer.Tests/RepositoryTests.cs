@@ -1,4 +1,3 @@
-using Contracts;
 using DotaMarket.DataLayer.Entities;
 using DotaMarket.DataLayer.Repository;
 using FluentAssertions;
@@ -46,22 +45,41 @@ namespace DotaMarket.DataLayer.Tests
         }
 
         [Fact]
-        public async Task FindById_ShouldReturnEntityById()
+        public void FindById_ShouldReturnEntityById()
         {
             // Arrange
             var user = _userHelper.GetUser();
-            var userDbSetMock = new Mock<DbSet<User>>();
-            userDbSetMock.Setup(x => x.Find(It.IsAny<object[]>())).Returns(user);
-            _contextMock.Setup(x => x.Set<User>()).Returns(userDbSetMock.Object);
+            var users = new List<User> { user };
+            var mockSet = new Mock<DbSet<User>>();
+            mockSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(users.AsQueryable().Provider);
+            mockSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(users.AsQueryable().Expression);
+            mockSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(users.AsQueryable().ElementType);
+            mockSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(users.GetEnumerator());
+
+            _contextMock.Setup(x => x.Set<User>()).Returns(mockSet.Object);
 
             // Act
-            var result = _sut.FindById<User>(user.Id);
+            var actualEntity = _sut.FindById<User>(user.Id);
+
+            // Assert
+            _contextMock.Verify(x => x.Set<User>(), Times.Once());
+            actualEntity.Should().BeEquivalentTo(user);
+        }
+
+        [Fact]
+        public async Task GetAllAsync_ShouldReturnAllEntities()
+        {
+            // Arrange
+            var users = _userHelper.GetUsers();
+            _contextMock.Setup(x => x.Set<User>()).Returns(Mock.Of<DbSet<User>>());
+
+            // Act
+            var actualUsers = await _sut.GetAllAsync<User>();
 
             // Assert
             _contextMock.Verify(x => x.Set<User>(), Times.Once);
-            //_contextMock.Verify(x => x.Find(), Times.Once);
-            result.Should().NotBeNull();
-            result.Should().BeEquivalentTo(user);
+            _contextMock.Verify(x => x.Set<User>().ToListAsync(It.IsAny<CancellationToken>()), Times.Once);
+            actualUsers.Should().BeEquivalentTo(users);
         }
 
         [Fact]
@@ -69,16 +87,18 @@ namespace DotaMarket.DataLayer.Tests
         {
             // Arrange
             var user = _userHelper.GetUser();
-            _contextMock.Setup(x => x.Set<User>())
+
+            _contextMock
+                .Setup(x => x.Set<User>())
                 .Returns(Mock.Of<DbSet<User>>());
+
             // Act
-            user.Name = "Test";
+            user.Name = "Foo";
             var result = await _sut.UpdateAsync<User>(user);
 
             // Assert
-            _contextMock.Verify(x => x.Entry(It.IsAny<User>()).State, Times.Once);
+            _contextMock.Verify(x => x.Entry(user).State, Times.Once);
             _contextMock.Verify(x => x.SaveChangesAsync(default), Times.Once);
-            result.Should().NotBeNull();
             result.Should().BeEquivalentTo(user);
         }
 
@@ -93,7 +113,6 @@ namespace DotaMarket.DataLayer.Tests
                 .Returns(Mock.Of<DbSet<User>>());
 
             // Act
-            
             await _sut.DeleteAsync<User>(user);
 
             // Assert
@@ -134,16 +153,15 @@ namespace DotaMarket.DataLayer.Tests
                 .Returns(Mock.Of<DbSet<User>>());
 
             // Act
-
-            var updatedUsers = users.Select(u => new User { Id = u.Id, Name = "Updated Name" });
-            var result = await _sut.UpdateRangeAsync<User>(updatedUsers);
+            users.Select(u => new User { Id = u.Id, Name = "Updated Name" });
+            var result = await _sut.UpdateRangeAsync<User>(users);
 
             // Assert
             _contextMock.Verify(x => x.Set<User>(), Times.Once);
             _contextMock.Verify(x => x.Set<User>().UpdateRange(users), Times.Once);
             _contextMock.Verify(x => x.SaveChangesAsync(default), Times.Once);
 
-            result.Should().BeEquivalentTo(updatedUsers);
+            result.Should().BeEquivalentTo(users);
         }
 
         [Fact]
