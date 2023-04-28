@@ -1,6 +1,4 @@
 ﻿using DotaMarket.DataLayer.Entities;
-using Microsoft.EntityFrameworkCore;
-using Moq;
 
 namespace DotaMarket.DataLayer.Tests
 {
