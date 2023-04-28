@@ -3,7 +3,11 @@ using DotaMarket.DataLayer.Repository;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Moq;
+using System.Linq.Expressions;
+using System.Net.Sockets;
 
 namespace DotaMarket.DataLayer.Tests
 {
@@ -48,22 +52,17 @@ namespace DotaMarket.DataLayer.Tests
         public void FindById_ShouldReturnEntityById()
         {
             // Arrange
-            var user = _userHelper.GetUser();
-            var users = new List<User> { user };
-            var mockSet = new Mock<DbSet<User>>();
-            mockSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(users.AsQueryable().Provider);
-            mockSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(users.AsQueryable().Expression);
-            mockSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(users.AsQueryable().ElementType);
-            mockSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(users.GetEnumerator());
-
-            _contextMock.Setup(x => x.Set<User>()).Returns(mockSet.Object);
+            var expectedUser = _userHelper.GetUser();
+            _contextMock.Setup(m => m.Set<User>().SingleOrDefault(It.IsAny<Expression<Func<User, bool>>>()))
+                .Returns(It.IsAny<User>);
 
             // Act
-            var actualEntity = _sut.FindById<User>(user.Id);
+            var result = _sut.FindById<User>(expectedUser.Id);
 
             // Assert
-            _contextMock.Verify(x => x.Set<User>(), Times.Once());
-            actualEntity.Should().BeEquivalentTo(user);
+            _contextMock.Verify(x => x.Set<User>(), Times.Once);
+            _contextMock.Verify(m => m.Set<User>().SingleOrDefault(It.IsAny<Expression<Func<User, bool>>>()), Times.Once);
+                        result.Should().BeEquivalentTo(expectedUser);
         }
 
         [Fact]
@@ -71,13 +70,14 @@ namespace DotaMarket.DataLayer.Tests
         {
             // Arrange
             var users = _userHelper.GetUsers();
-            _contextMock.Setup(x => x.Set<User>()).Returns(Mock.Of<DbSet<User>>());
+            _contextMock
+                .Setup(x => x.Set<User>())
+                .Returns(Mock.Of<DbSet<User>>());
 
             // Act
             var actualUsers = await _sut.GetAllAsync<User>();
 
             // Assert
-            _contextMock.Verify(x => x.Set<User>(), Times.Once);
             _contextMock.Verify(x => x.Set<User>().ToListAsync(It.IsAny<CancellationToken>()), Times.Once);
             actualUsers.Should().BeEquivalentTo(users);
         }
@@ -88,9 +88,15 @@ namespace DotaMarket.DataLayer.Tests
             // Arrange
             var user = _userHelper.GetUser();
 
-            _contextMock
-                .Setup(x => x.Set<User>())
-                .Returns(Mock.Of<DbSet<User>>());
+            var users = new List<User> { user };
+            var mockSet = new Mock<DbSet<User>>();
+            mockSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(users.AsQueryable().Provider);
+            mockSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(users.AsQueryable().Expression);
+            mockSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(users.AsQueryable().ElementType);
+            mockSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(users.GetEnumerator());
+            _contextMock.Setup(x => x.Entry(user).State).Returns(It.IsAny<User>);
+            
+            
 
             // Act
             user.Name = "Foo";
@@ -112,6 +118,10 @@ namespace DotaMarket.DataLayer.Tests
                 .Setup(x => x.Set<User>())
                 .Returns(Mock.Of<DbSet<User>>());
 
+            _contextMock
+                 .Setup(x => x.Remove(It.IsAny<User>()))
+                 .Returns(Mock.Of<EntityEntry<User>>);
+
             // Act
             await _sut.DeleteAsync<User>(user);
 
@@ -131,6 +141,10 @@ namespace DotaMarket.DataLayer.Tests
                 .Setup(x => x.Set<User>())
                 .Returns(Mock.Of<DbSet<User>>());
 
+            _contextMock
+                .Setup(x => x.AddRangeAsync(It.IsAny<IEnumerable<User>>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask);
+
             // Act
             await _sut.AddRangeAsync<User>(users);
 
@@ -149,8 +163,11 @@ namespace DotaMarket.DataLayer.Tests
             var users = _userHelper.GetUsers();
 
             _contextMock
-                .Setup(x => x.Set<User>())
-                .Returns(Mock.Of<DbSet<User>>());
+                 .Setup(x => x.Set<User>())
+                 .Returns(Mock.Of<DbSet<User>>());
+            _contextMock
+                .Setup(x => x.Set<User>().UpdateRange(It.IsAny<IEnumerable<User>>()))
+                .Verifiable();
 
             // Act
             users.Select(u => new User { Id = u.Id, Name = "Updated Name" });
@@ -173,6 +190,9 @@ namespace DotaMarket.DataLayer.Tests
             _contextMock
                 .Setup(x => x.Set<User>())
                 .Returns(Mock.Of<DbSet<User>>());
+            _contextMock
+                .Setup(x => x.Set<User>().RemoveRange(It.IsAny<IEnumerable<User>>()))
+                .Verifiable();
 
             // Act
             await _sut.DeleteRangeAsync<User>(users);
