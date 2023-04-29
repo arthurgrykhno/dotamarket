@@ -16,7 +16,6 @@ jobs:
 
     env:
       Solution_Name: DotaMarket.sln
-      Test_Project_Path: DotaMarket.DataLayer.Tests\DotaMarket.DataLayer.Tests.csproj
 
     steps:
     - uses: actions/checkout@v2
@@ -33,4 +32,4 @@ jobs:
       run: dotnet build $env:Solution_Name
 
     - name: Test
-      run: dotnet test $env:Test_Project_Path
+      run: dotnet test --collect $env:Solution_Name
