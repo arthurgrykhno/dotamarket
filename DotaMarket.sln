@@ -12,7 +12,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotaMarket.DataLayer", "Dot
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotaMarket.Contracts", "DotaMarket.Contracts\DotaMarket.Contracts.csproj", "{A3D311B8-6677-4881-8A3D-3E435FF6215A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotaMarket.DataLayer.Tests", "DotaMarket.DataLayer.Tests\DotaMarket.DataLayer.Tests.csproj", "{952D1E3F-6DA3-4446-9D35-BBB42E67816A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotaMarket.DataLayer.Tests", "DotaMarket.DataLayer.Tests\DotaMarket.DataLayer.Tests.csproj", "{952D1E3F-6DA3-4446-9D35-BBB42E67816A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject2", "TestProject2\TestProject2.csproj", "{87C0A11A-42B6-46AC-A25D-EC8D625A5C48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,10 @@ Global
 		{952D1E3F-6DA3-4446-9D35-BBB42E67816A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{952D1E3F-6DA3-4446-9D35-BBB42E67816A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{952D1E3F-6DA3-4446-9D35-BBB42E67816A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87C0A11A-42B6-46AC-A25D-EC8D625A5C48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87C0A11A-42B6-46AC-A25D-EC8D625A5C48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87C0A11A-42B6-46AC-A25D-EC8D625A5C48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87C0A11A-42B6-46AC-A25D-EC8D625A5C48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
