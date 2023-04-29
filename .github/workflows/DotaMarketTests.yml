@@ -30,7 +30,7 @@ jobs:
       run: dotnet restore
 
     - name: Build
-      run: dotnet build $(Solution_Name)
+      run: dotnet build $env:Solution_Name
 
     - name: Test
-      run: dotnet test $(Test_Project_Path)
+      run: dotnet test $env:Test_Project_Path
