@@ -6,7 +6,7 @@
         public Item? Item { get; set; }
 
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public User User { get; set; } = default!;
 
         public Guid? MarketDealId { get; set; }
         public MarketDeal? MarketDeal { get; set; }
