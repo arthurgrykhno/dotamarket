@@ -2,14 +2,14 @@
 {
     public class User : BaseEntity
     {
-        public string Name { get; set; }
-        public string Email { get; set; } 
-        public string Login { get; set; }
-        public string Password { get; set; }
+        public string Name { get; set; } = default!;
+        public string Email { get; set; } = default!;
+        public string Login { get; set; } = default!;
+        public string Password { get; set; } = default!;
         public int? Age { get; set; }
 
         public Guid MarketHistoryId { get; set; }
-        public IEnumerable<MarketHistory?> MarketHistory { get; set; }
+        public IEnumerable<MarketHistory>? MarketHistory { get; set; }
 
         public Guid? InventoryId { get; set; }
         public Inventory? Inventory { get; set; }

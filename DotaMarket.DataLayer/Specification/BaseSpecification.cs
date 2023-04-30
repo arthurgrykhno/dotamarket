@@ -5,12 +5,12 @@ namespace DotaMarket.DataLayer.Specification
 {
     public abstract class BaseSpecification<T> : ISpecification<T>
     {
-        public List<Expression<Func<T, bool>>> Criterias { get; private set; }
+        public List<Expression<Func<T, bool>>> Criterias { get; private set; } = default!;
         public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
         public List<string> IncludeStrings { get; } = new();
-        public Expression<Func<T, object>> OrderBy { get; private set; }
-        public Expression<Func<T, object>> OrderByDescending { get; private set; }
-        public Expression<Func<T, object>> GroupBy { get; private set; }
+        public Expression<Func<T, object>> OrderBy { get; private set; } = default!;
+        public Expression<Func<T, object>> OrderByDescending { get; private set; } = default!;
+        public Expression<Func<T, object>> GroupBy { get; private set; } = default!;
 
         public int Take { get; private set; }
         public int Skip { get; private set; }

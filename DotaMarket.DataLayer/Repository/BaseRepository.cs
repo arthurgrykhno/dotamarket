@@ -13,11 +13,12 @@ namespace DotaMarket.DataLayer.Repository
         {
             _context = context;
         }
-      
+
         public async Task<T> FindOneAsync<TEntity>(ISpecification<T> specification)
         {
-            var specificationResult = GetQuery(_context.Set<T>(),specification);
-            return await specificationResult.FirstOrDefaultAsync();
+            var specificationResult = GetQuery(_context.Set<T>(), specification);
+
+            return await specificationResult.FirstOrDefaultAsync() ?? throw new InvalidOperationException("No entity found.");
         }
 
         public async Task<IEnumerable<T>> FindAsync<TEntity>(ISpecification<T> specification)
@@ -73,7 +74,7 @@ namespace DotaMarket.DataLayer.Repository
 
         public T FindById<TEntity>(Guid id)
         {
-            return _context.Set<T>().SingleOrDefault(i => i.Id == id);
+            return _context.Set<T>().SingleOrDefault(i => i.Id == id)!;
         }
 
         private static IQueryable<T> GetQuery(IQueryable<T> inputQuery,
