@@ -1,4 +1,7 @@
+using DotaMarket.Authorization;
 using DotaMarket.DataLayer;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DotaMarket.Api
@@ -11,12 +14,31 @@ namespace DotaMarket.Api
 
             // Add services to the container.
            
-
             builder.Services.AddControllers();
+
+            // Configure Steam 
+            builder.Services.AddScoped<SteamAuthenticationService>();
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<DotaMarketContext>()
+                .AddDefaultTokenProviders()
+                .AddSignInManager<SignInManager<IdentityUser>>();
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+                .AddCookie()
+                .AddSteam(options =>
+                {
+                    options.ApplicationKey = "C806017BEFEACB91164AB95E1704912A";
+                });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            builder.Services.AddDbContext<DotaMarketContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddDbContext<DotaMarketContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+           
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -26,10 +48,23 @@ namespace DotaMarket.Api
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "steam-login",
+                    pattern: "steam/login",
+                    defaults: new { controller = "Steam", action = "Login" });
+
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
