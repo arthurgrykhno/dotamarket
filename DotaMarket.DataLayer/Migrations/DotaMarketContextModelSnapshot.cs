@@ -212,11 +212,11 @@ namespace DotaMarket.DataLayer.Migrations
                     b.Property<Guid>("MyAccountId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("OtherAccountId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("TradePartnerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("isDeleted")
                         .HasColumnType("bit")
@@ -226,7 +226,7 @@ namespace DotaMarket.DataLayer.Migrations
 
                     b.HasIndex("MyAccountId");
 
-                    b.HasIndex("OtherAccountId");
+                    b.HasIndex("TradePartnerId");
 
                     b.ToTable("SteamTradeOffers");
                 });
@@ -303,7 +303,7 @@ namespace DotaMarket.DataLayer.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("DotaMarket.DataLayer.Entities.SteamTradeOffer", null)
-                        .WithMany("OtherItems")
+                        .WithMany("TradePartnerItems")
                         .HasForeignKey("SteamTradeOfferId1")
                         .OnDelete(DeleteBehavior.Restrict);
 
@@ -381,14 +381,14 @@ namespace DotaMarket.DataLayer.Migrations
                         .HasForeignKey("MyAccountId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("DotaMarket.DataLayer.Entities.User", "OtherAccountName")
+                    b.HasOne("DotaMarket.DataLayer.Entities.User", "TradePartnerName")
                         .WithMany()
-                        .HasForeignKey("OtherAccountId")
+                        .HasForeignKey("TradePartnerId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("MyAccountName");
 
-                    b.Navigation("OtherAccountName");
+                    b.Navigation("TradePartnerName");
                 });
 
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.Inventory", b =>
@@ -405,7 +405,7 @@ namespace DotaMarket.DataLayer.Migrations
                 {
                     b.Navigation("MyItems");
 
-                    b.Navigation("OtherItems");
+                    b.Navigation("TradePartnerItems");
                 });
 
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.User", b =>

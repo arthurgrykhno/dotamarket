@@ -1,21 +1,18 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
+﻿using AspNet.Security.OpenId.Steam;
+using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
-using AspNet.Security.OpenId.Steam;
 
 namespace DotaMarket.Authorization
 {
     public class SteamAuthenticationService
     {
-        public Task<ExternalLoginInfo> GetExternalLoginInfoAsync(string returnUrl)
+        public Task<AuthenticationTicket> GetExternalLoginInfoAsync(string returnUrl)
         {
             var properties = new AuthenticationProperties { RedirectUri = returnUrl };
-            return Task.FromResult(new ExternalLoginInfo(
-                new ClaimsPrincipal(new ClaimsIdentity()),
-                SteamAuthenticationDefaults.AuthenticationScheme,
-                "76561197960435530",
-                "Steam user"
-            ));
+            var identity = new ClaimsIdentity(new List<Claim>(), SteamAuthenticationDefaults.AuthenticationScheme, ClaimTypes.NameIdentifier, null);
+            var principal = new ClaimsPrincipal(identity);
+            var ticket = new AuthenticationTicket(principal, properties, SteamAuthenticationDefaults.AuthenticationScheme);
+            return Task.FromResult(ticket);
         }
     }
 }

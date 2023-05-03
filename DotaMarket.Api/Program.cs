@@ -13,32 +13,28 @@ namespace DotaMarket.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-           
+
             builder.Services.AddControllers();
 
             // Configure Steam 
             builder.Services.AddScoped<SteamAuthenticationService>();
+
             builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<DotaMarketContext>()
-                .AddDefaultTokenProviders()
-                .AddSignInManager<SignInManager<IdentityUser>>();
-            builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-                .AddCookie()
-                .AddSteam(options =>
-                {
-                    options.ApplicationKey = "C806017BEFEACB91164AB95E1704912A";
-                });
+             .AddEntityFrameworkStores<DotaMarketContext>()
+             .AddDefaultTokenProviders()
+             .AddSignInManager<SignInManager<IdentityUser>>();
+
+            builder.Services.AddScoped<IdentityUserManager>();
+
+            // Register the authentication handler for "Steam" scheme
+            ConfigureIdentity(builder.Services);
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
             builder.Services.AddDbContext<DotaMarketContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-           
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -69,6 +65,20 @@ namespace DotaMarket.Api
             app.MapControllers();
 
             app.Run();
+        }
+
+        public static void ConfigureIdentity(IServiceCollection services)
+        {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+               .AddCookie()
+               .AddSteam(options =>
+               {
+                   options.ApplicationKey = "C806017BEFEACB91164AB95E1704912A";
+               });
         }
     }
 }

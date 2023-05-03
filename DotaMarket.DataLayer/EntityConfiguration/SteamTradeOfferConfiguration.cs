@@ -10,15 +10,9 @@ namespace DotaMarket.DataLayer.EntityConfiguration
         {
             base.Configure(builder);
 
-            builder.Property(e => e.OtherAccountId)
-                .IsRequired();
-
-            builder.Property(e => e.MyAccountId)
-                .IsRequired();
-
-            builder.HasOne(e => e.OtherAccountName)
+            builder.HasOne(e => e.TradePartnerName)
                 .WithMany()
-                .HasForeignKey(e => e.OtherAccountId)
+                .HasForeignKey(e => e.TradePartnerId)
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -33,7 +27,7 @@ namespace DotaMarket.DataLayer.EntityConfiguration
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany(e => e.OtherItems)
+            builder.HasMany(e => e.TradePartnerItems)
                 .WithOne()
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);

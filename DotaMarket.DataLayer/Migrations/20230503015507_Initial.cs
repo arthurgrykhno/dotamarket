@@ -55,7 +55,7 @@ namespace DotaMarket.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OtherAccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TradePartnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MyAccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -71,8 +71,8 @@ namespace DotaMarket.DataLayer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SteamTradeOffers_Users_OtherAccountId",
-                        column: x => x.OtherAccountId,
+                        name: "FK_SteamTradeOffers_Users_TradePartnerId",
+                        column: x => x.TradePartnerId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -261,9 +261,9 @@ namespace DotaMarket.DataLayer.Migrations
                 column: "MyAccountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SteamTradeOffers_OtherAccountId",
+                name: "IX_SteamTradeOffers_TradePartnerId",
                 table: "SteamTradeOffers",
-                column: "OtherAccountId");
+                column: "TradePartnerId");
         }
 
         /// <inheritdoc />

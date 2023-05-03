@@ -16,7 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotaMarket.DataLayer.Tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotaMarket.SteamApiGeneratore", "DotaMarket.SteamApiGeneratore\DotaMarket.SteamApiGeneratore.csproj", "{FD0DD0E2-3C40-405C-AF4D-9315C749B5BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotaMarket.Authorization", "DotaMarket.Authorization\DotaMarket.Authorization.csproj", "{E35F9E9E-CF85-48B5-97DA-F20FD631DE15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotaMarket.Authorization", "DotaMarket.Authorization\DotaMarket.Authorization.csproj", "{E35F9E9E-CF85-48B5-97DA-F20FD631DE15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
