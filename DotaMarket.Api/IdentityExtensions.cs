@@ -1,6 +1,6 @@
 ﻿using DotaMarket.Authorization;
+using DotaMarket.Contracts;
 using DotaMarket.DataLayer;
-using DotaMarket.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 

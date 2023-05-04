@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 
-namespace DotaMarket.Services
+namespace DotaMarket.Contracts
 {
     public interface ISteamAuthenticationService
     {

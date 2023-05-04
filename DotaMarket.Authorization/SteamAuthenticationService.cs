@@ -1,5 +1,5 @@
 ﻿using AspNet.Security.OpenId.Steam;
-using DotaMarket.Services;
+using DotaMarket.Contracts;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 

@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using DotaMarket.Contracts;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
-using DotaMarket.Services;
 
 namespace DotaMarket.Authorization
 {
@@ -21,7 +21,7 @@ namespace DotaMarket.Authorization
             var user = await _userManager.FindByLoginAsync(loginProvider, providerKey);
             if (user == null)
             {
-                throw new Exception("User not found");
+                throw new ArgumentException("User not found");
             }
             return user;
         }

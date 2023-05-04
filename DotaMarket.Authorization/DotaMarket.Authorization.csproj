@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DotaMarket.Services\DotaMarket.Services.csproj" />
+    <ProjectReference Include="..\DotaMarket.Contracts\DotaMarket.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

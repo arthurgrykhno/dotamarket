@@ -1,14 +1,15 @@
 ﻿using AspNet.Security.OpenId.Steam;
 using DotaMarket.Authorization;
-using DotaMarket.Services;
+using DotaMarket.Contracts;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 namespace DotaMarket.Api.Controllers
 {
-    [Produces("application/json")]
-    public class SteamController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class SteamController : ControllerBase
     {
         private readonly ISteamAuthenticationService _steamAuthService;
         private readonly IIdentityUserManager _identityUserManager;
@@ -43,7 +44,7 @@ namespace DotaMarket.Api.Controllers
 
             await _identityUserManager.SignInAsync(HttpContext, user);
 
-            return Redirect(_steamOpenIdOptions.ReturnUrl);
+            return Ok(new { message = "Successfully authenticated with Steam." });
         }
     }
 }

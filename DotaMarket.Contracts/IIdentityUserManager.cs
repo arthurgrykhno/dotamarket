@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-namespace DotaMarket.Services
+namespace DotaMarket.Contracts
 {
     public interface IIdentityUserManager
     {

@@ -32,21 +32,10 @@ namespace DotaMarket.Api
             }
 
             app.UseRouting();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "steam-login",
-                    pattern: "steam/login",
-                    defaults: new { controller = "Steam", action = "Login" });
-
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
 
             app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.MapControllers();
 
