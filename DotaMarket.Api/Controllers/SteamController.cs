@@ -1,5 +1,6 @@
 ﻿using AspNet.Security.OpenId.Steam;
 using DotaMarket.Authorization;
+using DotaMarket.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -9,13 +10,13 @@ namespace DotaMarket.Api.Controllers
     [Produces("application/json")]
     public class SteamController : Controller
     {
-        private readonly SteamAuthenticationService _steamAuthService;
-        private readonly IdentityUserManager _identityUserManager;
+        private readonly ISteamAuthenticationService _steamAuthService;
+        private readonly IIdentityUserManager _identityUserManager;
         private readonly SteamOpenIdOptions _steamOpenIdOptions;
 
         public SteamController(
-            SteamAuthenticationService steamAuthService,
-            IdentityUserManager identityUserManager,
+            ISteamAuthenticationService steamAuthService,
+            IIdentityUserManager identityUserManager,
             IOptions<SteamOpenIdOptions> steamOpenIdOptions)
         {
             _steamAuthService = steamAuthService;

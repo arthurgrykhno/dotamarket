@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using DotaMarket.Services;
 
 namespace DotaMarket.Authorization
 {
-    public class IdentityUserManager
+    public class IdentityUserManager : IIdentityUserManager
     {
         private readonly UserManager<IdentityUser> _userManager;
 

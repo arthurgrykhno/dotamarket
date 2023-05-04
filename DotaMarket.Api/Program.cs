@@ -1,6 +1,6 @@
 using DotaMarket.Authorization;
 using DotaMarket.DataLayer;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using DotaMarket.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,18 +16,8 @@ namespace DotaMarket.Api
 
             builder.Services.AddControllers();
 
-            // Configure Steam 
-            builder.Services.AddScoped<SteamAuthenticationService>();
-
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-             .AddEntityFrameworkStores<DotaMarketContext>()
-             .AddDefaultTokenProviders()
-             .AddSignInManager<SignInManager<IdentityUser>>();
-
-            builder.Services.AddScoped<IdentityUserManager>();
-
-            // Register the authentication handler for "Steam" scheme
-            ConfigureIdentity(builder.Services);
+            // Configure Steam and Register the authentication handler for "Steam" scheme
+            builder.Services.ConfigureIdentity();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
@@ -45,6 +35,7 @@ namespace DotaMarket.Api
             }
 
             app.UseRouting();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
@@ -60,25 +51,9 @@ namespace DotaMarket.Api
 
             app.UseAuthentication();
 
-            app.UseAuthorization();
-
             app.MapControllers();
 
             app.Run();
-        }
-
-        public static void ConfigureIdentity(IServiceCollection services)
-        {
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-               .AddCookie()
-               .AddSteam(options =>
-               {
-                   options.ApplicationKey = "C806017BEFEACB91164AB95E1704912A";
-               });
         }
     }
 }

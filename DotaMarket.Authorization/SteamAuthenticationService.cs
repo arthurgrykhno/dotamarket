@@ -1,10 +1,11 @@
 ﻿using AspNet.Security.OpenId.Steam;
+using DotaMarket.Services;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 
 namespace DotaMarket.Authorization
 {
-    public class SteamAuthenticationService
+    public class SteamAuthenticationService: ISteamAuthenticationService
     {
         public Task<AuthenticationTicket> GetExternalLoginInfoAsync(string returnUrl)
         {
