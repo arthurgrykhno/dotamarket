@@ -1,7 +1,4 @@
-using DotaMarket.Authorization;
 using DotaMarket.DataLayer;
-using DotaMarket.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DotaMarket.Api
