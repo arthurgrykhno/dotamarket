@@ -30,7 +30,7 @@ namespace DotaMarket.Api.Controllers
         {
             var properties = new AuthenticationProperties { RedirectUri = Url.Action(nameof(Callback)) };
             await HttpContext.ChallengeAsync(SteamAuthenticationDefaults.AuthenticationScheme, properties);
-            return Unauthorized();
+            return Ok();
         }
 
         [HttpGet("steam/external-login")]
