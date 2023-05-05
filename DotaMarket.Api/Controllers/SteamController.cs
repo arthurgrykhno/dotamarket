@@ -26,10 +26,11 @@ namespace DotaMarket.Api.Controllers
         }
 
         [HttpGet("steam/login")]
-        public IActionResult Login(string returnUrl = "/")
+        public async Task<IActionResult> LoginAsync([FromQuery] string returnUrl = "/")
         {
             var properties = new AuthenticationProperties { RedirectUri = Url.Action(nameof(Callback)) };
-            return Challenge(properties, SteamAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.ChallengeAsync(SteamAuthenticationDefaults.AuthenticationScheme, properties);
+            return Unauthorized();
         }
 
         [HttpGet("steam/external-login")]
