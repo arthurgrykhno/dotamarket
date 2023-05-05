@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DotaMarket.Api
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
