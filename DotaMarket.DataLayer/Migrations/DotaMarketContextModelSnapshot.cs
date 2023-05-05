@@ -70,12 +70,6 @@ namespace DotaMarket.DataLayer.Migrations
                     b.Property<int>("Rare")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("SteamTradeOfferId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("SteamTradeOfferId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("isDeleted")
                         .HasColumnType("bit")
                         .HasColumnName("isDeleted");
@@ -83,10 +77,6 @@ namespace DotaMarket.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("InventoryId");
-
-                    b.HasIndex("SteamTradeOfferId");
-
-                    b.HasIndex("SteamTradeOfferId1");
 
                     b.ToTable("Items");
                 });
@@ -199,38 +189,6 @@ namespace DotaMarket.DataLayer.Migrations
                     b.ToTable("OrderHistoryRows");
                 });
 
-            modelBuilder.Entity("DotaMarket.DataLayer.Entities.SteamTradeOffer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreatedAt");
-
-                    b.Property<Guid>("MyAccountId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("TradePartnerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit")
-                        .HasColumnName("isDeleted");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MyAccountId");
-
-                    b.HasIndex("TradePartnerId");
-
-                    b.ToTable("SteamTradeOffers");
-                });
-
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -296,16 +254,6 @@ namespace DotaMarket.DataLayer.Migrations
                         .HasForeignKey("InventoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("DotaMarket.DataLayer.Entities.SteamTradeOffer", null)
-                        .WithMany("MyItems")
-                        .HasForeignKey("SteamTradeOfferId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("DotaMarket.DataLayer.Entities.SteamTradeOffer", null)
-                        .WithMany("TradePartnerItems")
-                        .HasForeignKey("SteamTradeOfferId1")
-                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Inventory");
                 });
@@ -374,23 +322,6 @@ namespace DotaMarket.DataLayer.Migrations
                     b.Navigation("Seller");
                 });
 
-            modelBuilder.Entity("DotaMarket.DataLayer.Entities.SteamTradeOffer", b =>
-                {
-                    b.HasOne("DotaMarket.DataLayer.Entities.User", "MyAccountName")
-                        .WithMany()
-                        .HasForeignKey("MyAccountId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("DotaMarket.DataLayer.Entities.User", "TradePartnerName")
-                        .WithMany()
-                        .HasForeignKey("TradePartnerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("MyAccountName");
-
-                    b.Navigation("TradePartnerName");
-                });
-
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.Inventory", b =>
                 {
                     b.Navigation("Items");
@@ -399,13 +330,6 @@ namespace DotaMarket.DataLayer.Migrations
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.Item", b =>
                 {
                     b.Navigation("OrderHistoryRows");
-                });
-
-            modelBuilder.Entity("DotaMarket.DataLayer.Entities.SteamTradeOffer", b =>
-                {
-                    b.Navigation("MyItems");
-
-                    b.Navigation("TradePartnerItems");
                 });
 
             modelBuilder.Entity("DotaMarket.DataLayer.Entities.User", b =>

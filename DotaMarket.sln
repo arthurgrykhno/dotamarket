@@ -12,11 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotaMarket.DataLayer", "Dot
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotaMarket.Contracts", "DotaMarket.Contracts\DotaMarket.Contracts.csproj", "{A3D311B8-6677-4881-8A3D-3E435FF6215A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotaMarket.DataLayer.Tests", "DotaMarket.DataLayer.Tests\DotaMarket.DataLayer.Tests.csproj", "{952D1E3F-6DA3-4446-9D35-BBB42E67816A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotaMarket.SteamApiGeneratore", "DotaMarket.SteamApiGeneratore\DotaMarket.SteamApiGeneratore.csproj", "{FD0DD0E2-3C40-405C-AF4D-9315C749B5BE}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotaMarket.Authorization", "DotaMarket.Authorization\DotaMarket.Authorization.csproj", "{E35F9E9E-CF85-48B5-97DA-F20FD631DE15}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotaMarket.DataLayer.Tests", "DotaMarket.DataLayer.Tests\DotaMarket.DataLayer.Tests.csproj", "{952D1E3F-6DA3-4446-9D35-BBB42E67816A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,14 +36,6 @@ Global
 		{952D1E3F-6DA3-4446-9D35-BBB42E67816A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{952D1E3F-6DA3-4446-9D35-BBB42E67816A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{952D1E3F-6DA3-4446-9D35-BBB42E67816A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD0DD0E2-3C40-405C-AF4D-9315C749B5BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD0DD0E2-3C40-405C-AF4D-9315C749B5BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD0DD0E2-3C40-405C-AF4D-9315C749B5BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD0DD0E2-3C40-405C-AF4D-9315C749B5BE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E35F9E9E-CF85-48B5-97DA-F20FD631DE15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E35F9E9E-CF85-48B5-97DA-F20FD631DE15}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E35F9E9E-CF85-48B5-97DA-F20FD631DE15}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E35F9E9E-CF85-48B5-97DA-F20FD631DE15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

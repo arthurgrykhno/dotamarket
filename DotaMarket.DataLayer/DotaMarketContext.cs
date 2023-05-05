@@ -12,7 +12,6 @@ namespace DotaMarket.DataLayer
         public DbSet<MarketDeal> MarketDeals { get; set; }
         public DbSet<MarketHistory> MarketHistories { get; set; }
         public DbSet<OrderHistoryRow> OrderHistoryRows { get; set; }
-        public DbSet<SteamTradeOffer> SteamTradeOffers { get; set; }
        
         public DotaMarketContext(DbContextOptions<DotaMarketContext> options)
             : base(options)
@@ -27,7 +26,6 @@ namespace DotaMarket.DataLayer
             modelBuilder.ApplyConfiguration(new MarketDealConfiguration());
             modelBuilder.ApplyConfiguration(new MarketHistoryConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new SteamTradeOfferConfiguration());
         }
     }
 }
