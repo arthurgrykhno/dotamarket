@@ -3,20 +3,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DotaMarket.Api
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-           
 
             builder.Services.AddControllers();
+
+            // Configure Steam and Register the authentication handler for "Steam" scheme
+            builder.Services.ConfigureIdentity();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            builder.Services.AddDbContext<DotaMarketContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddDbContext<DotaMarketContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -26,10 +31,11 @@ namespace DotaMarket.Api
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

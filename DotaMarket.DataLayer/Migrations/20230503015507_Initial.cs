@@ -51,6 +51,34 @@ namespace DotaMarket.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SteamTradeOffers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TradePartnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MyAccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    isDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SteamTradeOffers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SteamTradeOffers_Users_MyAccountId",
+                        column: x => x.MyAccountId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SteamTradeOffers_Users_TradePartnerId",
+                        column: x => x.TradePartnerId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Items",
                 columns: table => new
                 {
@@ -60,6 +88,8 @@ namespace DotaMarket.DataLayer.Migrations
                     Rare = table.Column<int>(type: "int", nullable: false),
                     ItemSlot = table.Column<int>(type: "int", nullable: false),
                     InventoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SteamTradeOfferId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    SteamTradeOfferId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     isDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -72,6 +102,18 @@ namespace DotaMarket.DataLayer.Migrations
                         principalTable: "Inventories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Items_SteamTradeOffers_SteamTradeOfferId",
+                        column: x => x.SteamTradeOfferId,
+                        principalTable: "SteamTradeOffers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Items_SteamTradeOffers_SteamTradeOfferId1",
+                        column: x => x.SteamTradeOfferId1,
+                        principalTable: "SteamTradeOffers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -169,6 +211,16 @@ namespace DotaMarket.DataLayer.Migrations
                 column: "InventoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Items_SteamTradeOfferId",
+                table: "Items",
+                column: "SteamTradeOfferId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Items_SteamTradeOfferId1",
+                table: "Items",
+                column: "SteamTradeOfferId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MarketDeals_ItemId",
                 table: "MarketDeals",
                 column: "ItemId");
@@ -202,6 +254,16 @@ namespace DotaMarket.DataLayer.Migrations
                 name: "IX_OrderHistoryRows_SellerId",
                 table: "OrderHistoryRows",
                 column: "SellerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SteamTradeOffers_MyAccountId",
+                table: "SteamTradeOffers",
+                column: "MyAccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SteamTradeOffers_TradePartnerId",
+                table: "SteamTradeOffers",
+                column: "TradePartnerId");
         }
 
         /// <inheritdoc />
@@ -221,6 +283,9 @@ namespace DotaMarket.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "Inventories");
+
+            migrationBuilder.DropTable(
+                name: "SteamTradeOffers");
 
             migrationBuilder.DropTable(
                 name: "Users");
